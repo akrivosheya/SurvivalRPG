@@ -1,53 +1,61 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MovingPlayer : MonoBehaviour
 {
+    public int Id { get; private set; } = 2;//лучше где-то взять
     [SerializeField] private float Speed = 6f;
-    [SerializeField] private float CellLength = 1f;
-    [SerializeField] private float PositionRate = 0.2f;
+    [SerializeField] private float PositionRate = 0.5f;
     private Vector3 _nextPosition;
     private Vector3 _movement;
+    private float _distanceToPosition;
     private bool _isMoving = false;
 
     void Start()
     {
+        Managers.Scene.SetObjectPosition(Id, transform.position);
     }
 
     void Update()
     {
         if(_isMoving)
         {
-            transform.Translate(_movement * Time.deltaTime * Speed);
-            if((transform.position - _nextPosition).magnitude < PositionRate)
+            var oldPosition = transform.position;
+            var movement = _nextPosition - transform.position;
+            movement.Normalize();
+            movement = movement * Speed * Time.deltaTime;
+            transform.Translate(movement);
+            var newDistance = Vector2.Distance(transform.position, _nextPosition);
+            if(newDistance < PositionRate)
             {
-                _isMoving = false;
-                Debug.Log("stop moving");
+                if(newDistance > _distanceToPosition)
+                {
+                    _isMoving = false;
+                }
+                else
+                {
+                    _distanceToPosition = newDistance;
+                }
             }
         }
         else
         {
-
             var xAxis = Input.GetAxis("Horizontal");
             var yAxis = Input.GetAxis("Vertical");
             if(Mathf.Approximately(xAxis, 0) && Mathf.Approximately(yAxis, 0))
             {
                 return;
             }
-            var directionX = (int)((Mathf.Approximately(xAxis, 0)) ? 0 : Mathf.Sign(xAxis));
-            var directionY = (int)((Mathf.Approximately(yAxis, 0)) ? 0 : Mathf.Sign(yAxis));
-            Managers.Scene.FixDirection(ref directionX, ref directionY);
-            if(directionX == 0 && directionY == 0)
+            var direction = new Vector2Int();
+            direction.x = (int)((Mathf.Approximately(xAxis, 0)) ? 0 : Mathf.Sign(xAxis));
+            direction.y = (int)((Mathf.Approximately(yAxis, 0)) ? 0 : Mathf.Sign(yAxis));
+            if(!Managers.Scene.TryMoveObject(Id, direction, out Vector2Int fixedDirection))
             {
                 return;
             }
-            _movement = new Vector3(directionX, directionY, 0);
+            _movement = new Vector3(fixedDirection.x, fixedDirection.y, 0);
             _movement.Normalize();
             _isMoving = true;
-            _nextPosition = new Vector3(transform.position.x + CellLength * directionX,
-                transform.position.y + CellLength * directionY, 0);
-            Debug.Log("start moving");
+            _nextPosition = Managers.Scene.GetObjectScenePosition(Id);
         }
     }
 }

@@ -1,31 +1,32 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SceneManager : MonoBehaviour, IGameManager
 {
     public ManagerStatus status { get; private set; }
-    public int PlayerPositionX { get; private set; } = 9;
-    public int PlayerPositionY { get; private set; } = 9;
-    private readonly int WallId = -1;
-    private readonly int PlayerId = 1;
-    private int[] _scene;
+    [SerializeField] private float CellLength = 1f;
+    [SerializeField] private int SceneWidth = 19;
+    [SerializeField] private int SceneHeight = 19;
+    private Dictionary<int, Vector2Int> _objectsPositions = new Dictionary<int, Vector2Int>();
+    private readonly int EmptyId = 0;
+    private readonly int WallId = 1;
+    private int[] _grid;
 
     public void Startup()
     {
-        _scene = new int[19 * 19];
+        _grid = new int[SceneWidth * SceneHeight];
 
-        for(int i = 0; i < 19; ++i)
+        for(int i = 0; i < SceneHeight; ++i)
         {
-            for(int j = 0; j < 19; ++j)
+            for(int j = 0; j < SceneWidth; ++j)
             {
-                if(i == PlayerPositionX && j == PlayerPositionY)
+                if(i % (SceneHeight - 1) == 0 || j % (SceneWidth - 1) == 0)
                 {
-                    _scene[i * 19 + j] = PlayerId;
+                    _grid[i * SceneWidth + j] = WallId;
                 }
-                else if(i % 18 == 0 || j % 18 == 0)
+                else
                 {
-                    _scene[i * 19 + j] = WallId;
+                    _grid[i * SceneWidth + j] = EmptyId;
                 }
             }
         }
@@ -33,17 +34,54 @@ public class SceneManager : MonoBehaviour, IGameManager
         status = ManagerStatus.Started;
     }
 
-    public void FixDirection(ref int directionX, ref int directionY)
+    public bool TryMoveObject(int objectId, Vector2Int direction, out Vector2Int fixedDirection)
     {
-        if(PlayerPositionX + directionX >= 19 || PlayerPositionX + directionX < 0 || 
-            _scene[(PlayerPositionX + directionX) * 19 + PlayerPositionY] == WallId)
+        fixedDirection = direction;
+        if(!_objectsPositions.ContainsKey(objectId))
         {
-            directionX = 0;
+            //желательно обрабтать
+            return false;
         }
-        if(PlayerPositionY + directionY >= 19 || PlayerPositionY + directionY < 0 || 
-            _scene[PlayerPositionX * 19 + PlayerPositionY + directionY] == WallId)
+        var objectPosition = _objectsPositions[objectId];
+        FixDirection(objectPosition, ref fixedDirection);
+        _grid[objectPosition.y * SceneWidth + objectPosition.x] = EmptyId;//тут м/ю что-то особенное
+        objectPosition.x += fixedDirection.x;
+        objectPosition.y += fixedDirection.y;
+        _grid[objectPosition.y * SceneWidth + objectPosition.x] = objectId;
+        _objectsPositions[objectId] = objectPosition;
+        return true;
+    }
+
+    public void SetObjectPosition(int objectId, Vector3 sceneObjectPosition)
+    {
+        var objectPosition = new Vector2Int();
+        objectPosition.x = (int)(sceneObjectPosition.x / CellLength);
+        objectPosition.y = (int)(sceneObjectPosition.y / CellLength);
+        _grid[objectPosition.y * SceneWidth + objectPosition.x] = objectId;
+        _objectsPositions[objectId] = objectPosition;
+    }
+
+    public Vector3 GetObjectScenePosition(int objectId)
+    {
+        if(!_objectsPositions.ContainsKey(objectId))
         {
-            directionY = 0;
+            throw new NoSuchObjectOnSceneException(objectId);
+        }
+        var objectPosition = _objectsPositions[objectId];
+        return new Vector3(objectPosition.x * CellLength, objectPosition.y * CellLength);
+    }
+
+    private void FixDirection(Vector2Int position, ref Vector2Int direction)
+    {
+        if(position.x + direction.x >= SceneWidth || position.x + direction.x < 0 || 
+            _grid[position.y * SceneWidth + position.x + direction.x] == WallId)
+        {
+            direction.x = 0;
+        }
+        if(position.y + direction.y >= SceneHeight || position.y + direction.y < 0 || 
+            _grid[(position.y + direction.y) * SceneWidth + position.x] == WallId)
+        {
+            direction.y = 0;
         }
     }
 }
