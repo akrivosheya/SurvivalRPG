@@ -25,7 +25,6 @@ public class MovingPlayer : MonoBehaviour
             movement = movement * Speed * Time.deltaTime;
             transform.Translate(movement);
             var newDistance = Vector2.Distance(transform.position, _nextPosition);
-            Debug.Log("Current position: " + transform.position + "; Next position: " + _nextPosition);
             if(newDistance < PositionRate)
             {
                 if(newDistance > _distanceToPosition)

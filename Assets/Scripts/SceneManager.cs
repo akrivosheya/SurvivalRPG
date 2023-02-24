@@ -77,13 +77,22 @@ public class SceneManager : MonoBehaviour, IGameManager
 
     private void FixDirection(Vector2Int position, ref Vector2Int direction)
     {
+        //обработать случай с диагональным движением
+        if(position.x + direction.x < SceneWidth && position.x + direction.x >= 0 &&
+            position.y + direction.y < SceneHeight && position.y + direction.y >= 0 &&
+            _grid[(position.y + direction.y) * SceneWidth + position.x + direction.x] != EmptyId)
+        {
+            direction.x = 0;
+            direction.y = 0;
+            return;
+        }
         if(position.x + direction.x >= SceneWidth || position.x + direction.x < 0 || 
-            _grid[position.y * SceneWidth + position.x + direction.x] == WallId)
+            _grid[position.y * SceneWidth + position.x + direction.x] != EmptyId)
         {
             direction.x = 0;
         }
         if(position.y + direction.y >= SceneHeight || position.y + direction.y < 0 || 
-            _grid[(position.y + direction.y) * SceneWidth + position.x] == WallId)
+            _grid[(position.y + direction.y) * SceneWidth + position.x] != EmptyId)
         {
             direction.y = 0;
         }
