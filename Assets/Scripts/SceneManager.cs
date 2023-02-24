@@ -44,6 +44,10 @@ public class SceneManager : MonoBehaviour, IGameManager
         }
         var objectPosition = _objectsPositions[objectId];
         FixDirection(objectPosition, ref fixedDirection);
+        if(fixedDirection.x == 0 && fixedDirection.y == 0)
+        {
+            return false;
+        }
         _grid[objectPosition.y * SceneWidth + objectPosition.x] = EmptyId;//тут м/ю что-то особенное
         objectPosition.x += fixedDirection.x;
         objectPosition.y += fixedDirection.y;

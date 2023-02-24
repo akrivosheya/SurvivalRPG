@@ -6,7 +6,7 @@ public class MovingPlayer : MonoBehaviour
     [SerializeField] private float Speed = 6f;
     [SerializeField] private float PositionRate = 0.5f;
     private Vector3 _nextPosition;
-    private Vector3 _movement;
+    public Vector3 _movement;//должен быть private
     private float _distanceToPosition;
     private bool _isMoving = false;
 
@@ -25,11 +25,13 @@ public class MovingPlayer : MonoBehaviour
             movement = movement * Speed * Time.deltaTime;
             transform.Translate(movement);
             var newDistance = Vector2.Distance(transform.position, _nextPosition);
+            Debug.Log("Current position: " + transform.position + "; Next position: " + _nextPosition);
             if(newDistance < PositionRate)
             {
                 if(newDistance > _distanceToPosition)
                 {
                     _isMoving = false;
+                    transform.position = _nextPosition;
                 }
                 else
                 {
@@ -53,7 +55,6 @@ public class MovingPlayer : MonoBehaviour
                 return;
             }
             _movement = new Vector3(fixedDirection.x, fixedDirection.y, 0);
-            _movement.Normalize();
             _isMoving = true;
             _nextPosition = Managers.Scene.GetObjectScenePosition(Id);
         }
