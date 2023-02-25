@@ -3,10 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SceneManager))]
+[RequireComponent(typeof(InventoryManager))]
+[RequireComponent(typeof(LevelsManager))]
+[RequireComponent(typeof(ConditionsManager))]
+[RequireComponent(typeof(DialogsManager))]
 
 public class Managers : MonoBehaviour
 {
-    public static SceneManager Scene {get; private set;}
+    public static SceneManager Scene { get; private set; }
+    public static InventoryManager Inventory { get; private set; }
+    public static LevelsManager Levels { get; private set; }
+    public static ConditionsManager Conditions { get; private set; }
+    public static DialogsManager Dialogs { get; private set; }
 
     private List<IGameManager> _startSequence;
 
@@ -15,9 +23,17 @@ public class Managers : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         Scene = GetComponent<SceneManager>();
+        Inventory = GetComponent<InventoryManager>();
+        Levels = GetComponent<LevelsManager>();
+        Conditions = GetComponent<ConditionsManager>();
+        Dialogs = GetComponent<DialogsManager>();
 
         _startSequence = new List<IGameManager>();
         _startSequence.Add(Scene);
+        _startSequence.Add(Inventory);
+        _startSequence.Add(Levels);
+        _startSequence.Add(Conditions);
+        _startSequence.Add(Dialogs);
 
         StartCoroutine(StartupManager());
     }
@@ -57,6 +73,6 @@ public class Managers : MonoBehaviour
         }
         
         Debug.Log("All managers started up");
-        Messenger.Broadcast(StartupEvent.MANAGERS_STARTED);
+        //Messenger.Broadcast(StartupEvent.MANAGERS_STARTED);
     }
 }

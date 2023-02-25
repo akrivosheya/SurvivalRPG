@@ -15,6 +15,10 @@ public class Interacting : MonoBehaviour
 
     void Update()
     {
+        if(Managers.Dialogs.IsDialog)
+        {
+            return;
+        }
         if(Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("Pressed E");
@@ -29,9 +33,9 @@ public class Interacting : MonoBehaviour
             if(hit != null)
             {
                 Debug.Log("Got object");
-                if(hit.gameObject.TryGetComponent<Item>(out Item item))
+                if(hit.gameObject.TryGetComponent<Interactable>(out Interactable interactable))
                 {
-                    Debug.Log("Got " + item.Id);
+                    interactable.Interact(GetComponent<MovingPlayer>().Id);//заменить
                 }
             }
         }

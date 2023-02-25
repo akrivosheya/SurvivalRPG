@@ -16,7 +16,7 @@ public class SceneManager : MonoBehaviour, IGameManager
     {
         _grid = new int[SceneWidth * SceneHeight];
 
-        for(int i = 0; i < SceneHeight; ++i)
+        /*for(int i = 0; i < SceneHeight; ++i)
         {
             for(int j = 0; j < SceneWidth; ++j)
             {
@@ -29,7 +29,7 @@ public class SceneManager : MonoBehaviour, IGameManager
                     _grid[i * SceneWidth + j] = EmptyId;
                 }
             }
-        }
+        }*/
 
         status = ManagerStatus.Started;
     }
@@ -63,6 +63,29 @@ public class SceneManager : MonoBehaviour, IGameManager
         objectPosition.y = (int)(sceneObjectPosition.y / CellLength);
         _grid[objectPosition.y * SceneWidth + objectPosition.x] = objectId;
         _objectsPositions[objectId] = objectPosition;
+    }
+
+    public void SetObjectPosition(int objectId, Vector2Int gridObjectPosition)
+    {
+        var objectPosition = new Vector2Int();
+        objectPosition.x = gridObjectPosition.x;
+        objectPosition.y = gridObjectPosition.y;
+        _grid[objectPosition.y * SceneWidth + objectPosition.x] = objectId;
+        _objectsPositions[objectId] = objectPosition;//не для всех объектов
+    }
+
+    public void DeleteObject(Vector3 sceneObjectPosition)
+    {
+        SetObjectPosition(EmptyId, sceneObjectPosition);
+    }
+
+    public void DeleteObject(int objectId)
+    {
+        if(!_objectsPositions.ContainsKey(objectId))
+        {
+            return;
+        }
+        SetObjectPosition(EmptyId, _objectsPositions[objectId]);
     }
 
     public Vector3 GetObjectScenePosition(int objectId)
