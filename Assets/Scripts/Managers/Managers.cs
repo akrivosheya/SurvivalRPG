@@ -7,6 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(LevelsManager))]
 [RequireComponent(typeof(ConditionsManager))]
 [RequireComponent(typeof(DialogsManager))]
+[RequireComponent(typeof(AudioManager))]
 
 public class Managers : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class Managers : MonoBehaviour
     public static LevelsManager Levels { get; private set; }
     public static ConditionsManager Conditions { get; private set; }
     public static DialogsManager Dialogs { get; private set; }
+    public static AudioManager Audios { get; private set; }
 
     private List<IGameManager> _startSequence;
 
@@ -27,6 +29,7 @@ public class Managers : MonoBehaviour
         Levels = GetComponent<LevelsManager>();
         Conditions = GetComponent<ConditionsManager>();
         Dialogs = GetComponent<DialogsManager>();
+        Audios = GetComponent<AudioManager>();
 
         _startSequence = new List<IGameManager>();
         _startSequence.Add(Scene);
@@ -34,6 +37,7 @@ public class Managers : MonoBehaviour
         _startSequence.Add(Levels);
         _startSequence.Add(Conditions);
         _startSequence.Add(Dialogs);
+        _startSequence.Add(Audios);
 
         StartCoroutine(StartupManager());
     }

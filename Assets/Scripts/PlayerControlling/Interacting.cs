@@ -21,8 +21,8 @@ public class Interacting : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log("Pressed E");
-            var movement = GetComponent<MovingPlayer>()._movement;//надо заменить
+            var movementInt = GetComponent<MovingPlayer>()._movement;//надо заменить
+            var movement = new Vector3(movementInt.x, movementInt.y, 0);
             movement.x += Mathf.Sign(movement.x) * 0.1f;
             movement.y += Mathf.Sign(movement.y) * 0.1f;
             var maxBounds = _boxCollider.bounds.max;
@@ -32,7 +32,6 @@ public class Interacting : MonoBehaviour
             Collider2D hit = Physics2D.OverlapArea(corner1, corner2);
             if(hit != null)
             {
-                Debug.Log("Got object");
                 if(hit.gameObject.TryGetComponent<Interactable>(out Interactable interactable))
                 {
                     interactable.Interact(GetComponent<MovingPlayer>().Id);//заменить

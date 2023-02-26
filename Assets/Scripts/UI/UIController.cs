@@ -38,8 +38,10 @@ public class UIController : MonoBehaviour
 
     public void OnDialogStarted()
     {
+        Debug.Log("Show dialog");
         DialogWindow.SetActive(true);
         Dialog.text = Managers.Dialogs.CurrentSentence;
+        Debug.Log("Show dialog");
     }
 
     public void OnDialogNextSentence()
@@ -54,7 +56,8 @@ public class UIController : MonoBehaviour
 
     public void OnStart()
     {
-        Managers.Levels.LoadScene(0);//что-то конкретное
+        
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainGame");//Managers.Levels.LoadScene(0);//что-то конкретное
     }
 
     public void OnExit()

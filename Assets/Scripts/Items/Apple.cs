@@ -17,6 +17,7 @@ public class Apple : MonoBehaviour, Item, Interactable
         Messenger.Broadcast(GameEvent.ITEM_ADDED);
         Managers.Scene.DeleteObject(transform.position);
         Managers.Conditions.AddCondition("HAS_APPLE");//ЛУЧШЕ КАК-ТО ФОРМАЛИЗОВАТЬ
+        Managers.Audios.PlayGoodMusic();
         Destroy(this.gameObject);
     }
 }

@@ -36,7 +36,7 @@ public class Exit : MonoBehaviour
                 {
                     Managers.Levels.LoadScene(-1);//что-то
                 }
-                moving.transform.position = NextExit.position;
+                //moving.transform.position = NextExit.position;
                 moving.SetTo(NextExit.position + Offset);
                 Managers.Scene.DeleteObject(moving.Id);
                 Managers.Scene.SetObjectPosition(moving.Id, NextExit.position + Offset);
