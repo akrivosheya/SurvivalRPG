@@ -13,11 +13,15 @@ public class Apple : MonoBehaviour, Item, Interactable
 
     public void Interact(int interactingId)
     {
-        Managers.Inventory.AddItem(Id);
-        Messenger.Broadcast(GameEvent.ITEM_ADDED);
-        Managers.Scene.DeleteObject(transform.position);
-        Managers.Conditions.AddCondition("HAS_AXE");//ЛУЧШЕ КАК-ТО ФОРМАЛИЗОВАТЬ
-        Managers.Audios.PlayGoodMusic();
-        Destroy(this.gameObject);
+        if(Managers.Conditions["SPOKEN_WITH_THING"])
+        {
+            Managers.Inventory.AddItem(Id);
+            Messenger.Broadcast(GameEvent.ITEM_ADDED);
+            //Managers.Scene.DeleteObject(transform.position);
+            Managers.Conditions.AddCondition("HAS_AXE");//ЛУЧШЕ КАК-ТО ФОРМАЛИЗОВАТЬ
+            Messenger.Broadcast("HAS_AXE");
+            Managers.Audios.PlayAxeSound();
+            Destroy(this.gameObject);
+        }
     }
 }

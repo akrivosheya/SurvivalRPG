@@ -26,7 +26,6 @@ public class DialogPoint : MonoBehaviour, Interactable
             bool correctDialog = true;
             foreach(string condition in conditionsArray)
             {
-                Debug.Log("Index: " + i + "; condition: " + condition.Length);
                 if(!Managers.Conditions[condition])
                 {
                     correctDialog = false;

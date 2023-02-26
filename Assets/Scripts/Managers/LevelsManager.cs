@@ -10,8 +10,8 @@ public class LevelsManager : MonoBehaviour, IGameManager
         status = ManagerStatus.Started;
     }
 
-    public void LoadScene(int sceneId)
+    public void LoadScene(string scene)
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainGame");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(scene);
     }
 }

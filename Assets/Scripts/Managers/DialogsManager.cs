@@ -62,7 +62,7 @@ public class DialogsManager : MonoBehaviour, IGameManager
 
     private IEnumerator AllowPressKey()
     {
-        yield return new WaitForSeconds(0.5f);//константа
+        yield return new WaitForSeconds(0.3f);//константа
 
         _canPressKey = true;
     }

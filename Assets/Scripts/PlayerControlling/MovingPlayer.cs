@@ -24,8 +24,9 @@ public class MovingPlayer : MonoBehaviour
 
     void Update()
     {
-        if(Managers.Dialogs.IsDialog)
+        if(Managers.Dialogs.IsDialog || Managers.Conditions["START_ENDING"])
         {
+            _animator.SetInteger("direction", 0);
             return;
         }
             var xAxis = Input.GetAxis("Horizontal");
@@ -97,7 +98,7 @@ public class MovingPlayer : MonoBehaviour
     void LateUpdate()
     {
         
-            if(!_noDirection)//очень плохо
+            if(!_noDirection && !Managers.Dialogs.IsDialog && !Managers.Conditions["START_ENDING"])//очень плохо
             {
                 _noDirection = false;
                 if(_movement.x != 0)

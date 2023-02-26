@@ -25,19 +25,26 @@ public class Exit : MonoBehaviour
             if(_overlapedColliders[0].gameObject.TryGetComponent<MovingPlayer>(out MovingPlayer moving))
             {
                 Debug.Log("Player");
-                var correctConditions = true;
-                foreach(var condition in ConditionsToExit)
+                //var correctConditions = false;
+                /*foreach(var condition in ConditionsToExit)
                 {
-                    if(!Managers.Conditions[condition])
+                    if(Managers.Conditions[condition])
                     {
-                        correctConditions = false;
+                        correctConditions = true;
                         break;
                     }
                 }
                 if(correctConditions)
                 {
-                    Managers.Levels.LoadScene(-1);//что-то
-                }
+                    if(Managers.Conditions["KILL_STRANGER"])
+                    {
+                        Managers.Levels.LoadScene("BadEnding");//что-то
+                    }
+                    if(Managers.Conditions["KILL_TREE"])
+                    {
+                        Managers.Levels.LoadScene("GoodEnding");//что-то
+                    }
+                }*/
                 //moving.transform.position = NextExit.position;
                 var nextPosition = NextExit.position + Offset;
                 moving.SetTo(nextPosition);

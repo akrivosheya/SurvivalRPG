@@ -27,6 +27,10 @@ public class UIController : MonoBehaviour
 
     void Start()
     {
+        if(DialogWindow == null)
+        {
+            return;
+        }
         DialogWindow.SetActive(false);
         NewItem.text = "";//константы
     }
@@ -39,11 +43,9 @@ public class UIController : MonoBehaviour
 
     public void OnDialogStarted()
     {
-        Debug.Log("Show dialog");
         DialogWindow.SetActive(true);
         Dialog.text = Managers.Dialogs.CurrentSentence;
         Person.text = Managers.Dialogs.CurrentPerson;
-        Debug.Log("Show dialog");
     }
 
     public void OnDialogNextSentence()
