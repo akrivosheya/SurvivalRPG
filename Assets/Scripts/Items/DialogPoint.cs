@@ -7,8 +7,10 @@ public class DialogPoint : MonoBehaviour, Interactable
     public int Id { get; private set; } = 5;//лучше где-то взять
     [SerializeField] private List<string> AllConditions;
     [SerializeField] private List<string> Dialogs;
+    [SerializeField] private List<string> Persons;
     [SerializeField] private List<string> NewConditions;
     [SerializeField] private List<string> DeletingConditions;
+    [SerializeField] private List<string> Messages;
 
     void Start()
     {
@@ -43,7 +45,11 @@ public class DialogPoint : MonoBehaviour, Interactable
             {
                 Managers.Conditions.DeleteCondition(condition);
             }
-            Managers.Dialogs.StartDialog(Dialogs[i].Split(';'));//константа
+            foreach(var message in Messages[i].Split(';'))//константа
+            {
+                Messenger.Broadcast(message);
+            }
+            Managers.Dialogs.StartDialog(Dialogs[i].Split(';'), Persons[i].Split(';'));//константа
             break;
         }
     }

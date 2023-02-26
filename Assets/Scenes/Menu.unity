@@ -403,8 +403,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: -1938360136, guid: 372f4121fab8a704497c36e1a5648198, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -745,8 +745,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: -890007908, guid: 372f4121fab8a704497c36e1a5648198, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -810,6 +810,7 @@ MonoBehaviour:
   NewItem: {fileID: 0}
   DialogWindow: {fileID: 0}
   Dialog: {fileID: 0}
+  Person: {fileID: 0}
 --- !u!1 &1595682306
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,8 +5,10 @@ public class DialogsManager : MonoBehaviour, IGameManager
 {
     public ManagerStatus status { get; private set; }
     public string CurrentSentence { get { return _sentences[_currentSentenceIndex]; } }
+    public string CurrentPerson { get { return _persons[_currentSentenceIndex]; } }
     public bool IsDialog { get; private set; } = false;
     private string[] _sentences;
+    private string[] _persons;
     private int _currentSentenceIndex;
     private bool _canPressKey = false;
 
@@ -37,15 +39,15 @@ public class DialogsManager : MonoBehaviour, IGameManager
         }
     }
 
-    public void StartDialog(string[] sentences)
+    public void StartDialog(string[] sentences, string[] persons)
     {
         if(sentences.Length <= 0)
         {
             return;
         }
-        Debug.Log("Start dialog: " + sentences[0]);
         _currentSentenceIndex = 0;
         _sentences = sentences;
+        _persons = persons;
         IsDialog = true;
         Messenger.Broadcast(GameEvent.DIALOG_STARTED);
         StartCoroutine(AllowPressKey());

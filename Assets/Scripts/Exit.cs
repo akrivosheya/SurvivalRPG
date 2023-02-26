@@ -5,6 +5,7 @@ using UnityEngine;
 public class Exit : MonoBehaviour
 {
     public int Id { get; private set; } = 4;
+    [SerializeField] private Camera Camera;
     [SerializeField] private Transform NextExit;
     [SerializeField] private Vector3 Offset;
     [SerializeField] private List<string> ConditionsToExit;
@@ -23,6 +24,7 @@ public class Exit : MonoBehaviour
         {
             if(_overlapedColliders[0].gameObject.TryGetComponent<MovingPlayer>(out MovingPlayer moving))
             {
+                Debug.Log("Player");
                 var correctConditions = true;
                 foreach(var condition in ConditionsToExit)
                 {
@@ -37,9 +39,12 @@ public class Exit : MonoBehaviour
                     Managers.Levels.LoadScene(-1);//что-то
                 }
                 //moving.transform.position = NextExit.position;
-                moving.SetTo(NextExit.position + Offset);
+                var nextPosition = NextExit.position + Offset;
+                moving.SetTo(nextPosition);
                 Managers.Scene.DeleteObject(moving.Id);
-                Managers.Scene.SetObjectPosition(moving.Id, NextExit.position + Offset);
+                Managers.Scene.SetObjectPosition(moving.Id, nextPosition);
+                nextPosition.z = -10;
+                Camera.transform.position = nextPosition;
             }
         }
     }

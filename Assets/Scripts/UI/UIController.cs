@@ -7,6 +7,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private Text NewItem;
     [SerializeField] private GameObject DialogWindow;
     [SerializeField] private Text Dialog;
+    [SerializeField] private Text Person;
 
     void Awake()
     {
@@ -41,12 +42,14 @@ public class UIController : MonoBehaviour
         Debug.Log("Show dialog");
         DialogWindow.SetActive(true);
         Dialog.text = Managers.Dialogs.CurrentSentence;
+        Person.text = Managers.Dialogs.CurrentPerson;
         Debug.Log("Show dialog");
     }
 
     public void OnDialogNextSentence()
     {
         Dialog.text = Managers.Dialogs.CurrentSentence;
+        Person.text = Managers.Dialogs.CurrentPerson;
     }
 
     public void OnDialogEnded()

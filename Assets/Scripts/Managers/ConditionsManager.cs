@@ -10,6 +10,7 @@ public class ConditionsManager : MonoBehaviour, IGameManager
     public void Startup()
     {
         _conditions = new Dictionary<string, bool>();
+        _conditions[""] = true;
         status = ManagerStatus.Started;
     }
 
