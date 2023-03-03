@@ -1,136 +1,58 @@
 using UnityEngine;
 
+[RequireComponent(typeof(ObjectData))]
+
 public class MovingPlayer : MonoBehaviour
 {
-    public int Id { get; private set; } = 2;//лучше где-то взять
     [SerializeField] private float Speed = 6f;
     [SerializeField] private float SmoothingSpeed = 0.1f;
     [SerializeField] private float PositionRate = 0.5f;
+    [SerializeField] private float ZYOffset = 0.2f;
+    [SerializeField] private float AxisLimit = 0.5f;
     private Animator _animator;
+    private ObjectData _objectData;
     private Vector3 _nextPosition;
-    public Vector3Int _movement;//должен быть private
-    public Vector2Int directionA;
+    private Vector2Int _movement;
     private Vector3 _smoothingVelocity = Vector3.zero;
     private float _distanceToPosition;
     private bool _isMoving = false;
-    private bool _noDirection = false;
 
     void Start()
     {
-        Managers.Scene.SetObjectPosition(Id, transform.position);
-        _nextPosition = transform.position;
         _animator = GetComponent<Animator>();
+        _objectData = GetComponent<ObjectData>();
+        _objectData.Id = ObjectsId.Player;
+        Managers.Scene.SetObjectPosition((int)_objectData.Id, transform.position);
+        _nextPosition = transform.position;
     }
 
     void Update()
     {
         if(Managers.Dialogs.IsDialog || Managers.Conditions["START_ENDING"])
         {
-            _animator.SetInteger("direction", 0);
+            _animator.SetInteger("movement", (int)AnimatorParameters.Stop);
             return;
         }
-            var xAxis = Input.GetAxis("Horizontal");
-            var yAxis = Input.GetAxis("Vertical");
-            var direction = new Vector2Int();
-            direction.x = (int)((Mathf.Approximately(xAxis, 0)) ? 0 : Mathf.Sign(xAxis));
-            direction.y = (int)((Mathf.Approximately(yAxis, 0)) ? 0 : Mathf.Sign(yAxis));
-            directionA = direction;
-            if(_movement.x != direction.x || _movement.y != direction.y)
-            {
-                if(!direction.Equals(Vector2Int.zero))
-                {
-                    _movement = new Vector3Int(direction.x, direction.y, 0);
-                }
-                else
-                {
-                    _noDirection = true;
-                    _animator.SetInteger("direction", 0);
-                }
-            }
+
+        var xAxis = Input.GetAxis("Horizontal");
+        var yAxis = Input.GetAxis("Vertical");
+        _movement.x = (int)((Mathf.Abs(xAxis) < AxisLimit) ? 0 : Mathf.Sign(xAxis));
+        _movement.y = (int)((Mathf.Abs(yAxis) < AxisLimit) ? 0 : Mathf.Sign(yAxis));
         if(_isMoving)
         {
-            var oldPosition = transform.position;
-            var movement = _nextPosition - transform.position;
-            movement.Normalize();
-            movement = movement * Speed * Time.deltaTime;
-            transform.Translate(movement);
-            var newDistance = Vector2.Distance(transform.position, _nextPosition);
-            if(newDistance < PositionRate)
-            {
-                if(newDistance > _distanceToPosition)
-                {
-                    _isMoving = false;
-                    //_animator.SetInteger("direction", 0);//плохо
-                    /*transform.position = _nextPosition;
-                }
-                else
-                {
-                    _distanceToPosition = newDistance;*/
-                }
-            }
+            Move();
         }
         else
         {
-            if(Mathf.Approximately(xAxis, 0) && Mathf.Approximately(yAxis, 0))
-            {
-                //_animator.SetInteger("direction", 0);//плохо
-                if(!transform.position.Equals(_nextPosition))
-                {
-                    transform.position = Vector3.SmoothDamp(transform.position, _nextPosition, ref _smoothingVelocity, SmoothingSpeed);
-                }
-                return;
-            }
-            if(!Managers.Scene.TryMoveObject(Id, direction, out Vector2Int fixedDirection))
-            {
-                //_animator.SetInteger("direction", 0);//плохо
-                if(!transform.position.Equals(_nextPosition))
-                {
-                    transform.position = Vector3.SmoothDamp(transform.position, _nextPosition, ref _smoothingVelocity, SmoothingSpeed);
-                }
-                return;
-            }
-            _isMoving = true;
-            _nextPosition = Managers.Scene.GetObjectScenePosition(Id);
-            _nextPosition.z = _nextPosition.y + 0.2f;//ааааааааааа
+            TryStartMoving();
         }
-    }
-
-    void LateUpdate()
-    {
-        
-            if(!_noDirection && !Managers.Dialogs.IsDialog && !Managers.Conditions["START_ENDING"])//очень плохо
-            {
-                _noDirection = false;
-                if(_movement.x != 0)
-                {    
-                    if(_movement.x > 0)
-                    {
-                        _animator.SetInteger("direction", 3);//плохо и дальше
-                    }
-                    else
-                    {
-                        _animator.SetInteger("direction", 4);
-                    }
-                }
-                else if(_movement.y != 0)
-                {
-                    if(_movement.y > 0)
-                    {
-                        _animator.SetInteger("direction", 2);
-                    }
-                    else
-                    {
-                        _animator.SetInteger("direction", 1);
-                    }
-                }
-            }
-            _noDirection = false;
+        SetAnimation();
     }
 
     public void MoveTo(Vector3 transformPosition)
     {
         _isMoving = true;
-        _nextPosition = Managers.Scene.GetObjectScenePosition(Id);
+        _nextPosition = Managers.Scene.GetObjectScenePosition((int)_objectData.Id);
     }
 
     public void SetTo(Vector3 transformPosition)
@@ -138,5 +60,75 @@ public class MovingPlayer : MonoBehaviour
         _isMoving = false;
         transform.position = transformPosition;
         _nextPosition = transformPosition;
+    }
+
+    private void Move()
+    {
+        var movement = _nextPosition - transform.position;
+        movement.Normalize();
+        movement = movement * Speed * Time.deltaTime;
+        transform.Translate(movement);
+        var newDistance = Vector2.Distance(transform.position, _nextPosition);
+        if(newDistance < PositionRate)
+        {
+            if(newDistance > _distanceToPosition)
+            {
+                _isMoving = false;
+            }
+            else
+            {
+                _distanceToPosition = newDistance;
+            }
+        }
+    }
+
+    private void TryStartMoving()
+    {
+        if(_movement.Equals(Vector2Int.zero) || !Managers.Scene.TryMoveObject((int)_objectData.Id, _movement, out Vector2Int fixedMovement))
+        {
+            if(!transform.position.Equals(_nextPosition))
+            {
+                transform.position = Vector3.SmoothDamp(transform.position, _nextPosition, ref _smoothingVelocity, SmoothingSpeed);
+            }
+        }
+        else
+        {
+            _isMoving = true;
+            _nextPosition = Managers.Scene.GetObjectScenePosition((int)_objectData.Id);
+            _nextPosition.z = _nextPosition.y + ZYOffset;
+        }
+    }
+
+    private void SetAnimation()
+    {
+        if(!Managers.Dialogs.IsDialog && !Managers.Conditions["START_ENDING"])//очень плохо
+        {
+            if(_movement.Equals(Vector2Int.zero))
+            {
+                _animator.SetInteger("movement", (int)AnimatorParameters.Stop);
+            }
+            else if(_movement.x != 0)
+            {    
+                if(_movement.x > 0)
+                {
+                    _animator.SetInteger("movement", (int)AnimatorParameters.MovingRight);//плохо и дальше
+                }
+                else
+                {
+                    _animator.SetInteger("movement", (int)AnimatorParameters.MovingLeft);
+                }
+            }
+            else if(_movement.y != 0)
+            {
+                if(_movement.y > 0)
+                {
+                    _animator.SetInteger("movement", (int)AnimatorParameters.MovingUp);
+                }
+                else
+                {
+                    _animator.SetInteger("movement", (int)AnimatorParameters.MovingDown);
+                }
+            }
+        }
     }
 }

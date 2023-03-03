@@ -1,16 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(ObjectData))]
 
 public class Interacting : MonoBehaviour
 {
+    [SerializeField] private float OverlapOffset = 0.1f;
     private BoxCollider2D _boxCollider;
+    private ObjectData _objectData;
+    private Vector2Int _direction;
 
     void Start()
     {
         _boxCollider = GetComponent<BoxCollider2D>();
+        _objectData = GetComponent<ObjectData>();
     }
 
     void Update()
@@ -19,22 +22,30 @@ public class Interacting : MonoBehaviour
         {
             return;
         }
+        var xAxis = Input.GetAxis("Horizontal");
+        var yAxis = Input.GetAxis("Vertical");
+        var axises = new Vector2Int();
+        axises.x = (int)((Mathf.Approximately(xAxis, 0)) ? 0 : Mathf.Sign(xAxis));
+        axises.y = (int)((Mathf.Approximately(yAxis, 0)) ? 0 : Mathf.Sign(yAxis));
+        if(!axises.Equals(Vector2Int.zero) && _direction != axises)
+        {
+            _direction = axises;
+        }
         if(Input.GetKeyDown(KeyCode.E))
         {
-            var movementInt = GetComponent<MovingPlayer>()._movement;//надо заменить
-            var movement = new Vector3(movementInt.x, movementInt.y, 0);
-            movement.x += Mathf.Sign(movement.x) * 0.1f;
-            movement.y += Mathf.Sign(movement.y) * 0.1f;
+            var offset = new Vector3(_direction.x, _direction.y, 0);
+            offset.x += Mathf.Sign(offset.x) * OverlapOffset;
+            offset.y += Mathf.Sign(offset.y) * OverlapOffset;
             var maxBounds = _boxCollider.bounds.max;
             var minBounds = _boxCollider.bounds.min;
-            var corner1 = new Vector2(maxBounds.x + movement.x, maxBounds.y + movement.y);
-            var corner2 = new Vector2(minBounds.x + movement.x, minBounds.y + movement.y);
+            var corner1 = new Vector2(maxBounds.x + offset.x, maxBounds.y + offset.y);
+            var corner2 = new Vector2(minBounds.x + offset.x, minBounds.y + offset.y);
             Collider2D hit = Physics2D.OverlapArea(corner1, corner2);
             if(hit != null)
             {
                 if(hit.gameObject.TryGetComponent<Interactable>(out Interactable interactable))
                 {
-                    interactable.Interact(GetComponent<MovingPlayer>().Id);//заменить
+                    interactable.Interact((int)_objectData.Id);
                 }
             }
         }
