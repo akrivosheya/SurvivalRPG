@@ -91,7 +91,7 @@ public class MovingPlayer : MonoBehaviour
             }
             _isMoving = true;
             _nextPosition = Managers.Scene.GetObjectScenePosition(Id);
-            _nextPosition.z = _nextPosition.y;
+            _nextPosition.z = _nextPosition.y + 0.2f;//ааааааааааа
         }
     }
 
