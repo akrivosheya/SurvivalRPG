@@ -1,48 +1,33 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour, IGameManager
 {
+    //сделать плавные переходы
+    //получать звуки из ресурсов
     public ManagerStatus status { get; private set; }
-    [SerializeField] private AudioSource Ambient;
-    [SerializeField] private AudioSource OneShot;
-    [SerializeField] private AudioClip WindSound;
-    [SerializeField] private AudioClip AxeSound;
-    [SerializeField] private AudioClip HeartSound;
-    [SerializeField] private AudioClip ScarySound;
-    [SerializeField] private AudioClip TreeSound;
+    [SerializeField] private AudioSource FontSource;
+    [SerializeField] private AudioSource OneShotSource;
+    [SerializeField] private List<AudioClip> Clips;
 
     public void Startup()
     {
         status = ManagerStatus.Started;
     }
 
-    public void PlayAxeSound()
+    public void PlayOneShotSound(int soundIndex)
     {
-        OneShot.clip = AxeSound;
-        OneShot.Play();
-    }
-
-    public void PlayScarySound()
-    {
-        OneShot.clip = ScarySound;
-        OneShot.Play();
-    }
-
-    public void PlayHeartSound()
-    {
-        OneShot.clip = HeartSound;
-        OneShot.Play();
-    }
-
-    public void PlayTreeSound()
-    {
-        OneShot.clip = TreeSound;
-        OneShot.Play();
+        if(soundIndex >= Clips.Count || soundIndex < 0)
+        {
+            throw new NoSuchAudioClipException(soundIndex);
+        }
+        OneShotSource.clip = Clips[soundIndex];
+        OneShotSource.Play();
     }
     
-    public void StopAmbient()
+    public void StopFont()
     {
-        Ambient.Stop();
+        FontSource.Stop();
     }
 }
 

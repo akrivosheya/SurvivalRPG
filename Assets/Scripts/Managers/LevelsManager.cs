@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class LevelsManager : MonoBehaviour, IGameManager
 {
+    //список доступных уровней
     public ManagerStatus status { get; private set; }
 
 

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour, IGameManager
 {
+    //сделать список объектов в файле
     public ManagerStatus status { get; private set; }
     public string NewItem { get; private set; }
     [SerializeField] private List<string> Items;
@@ -15,12 +16,16 @@ public class InventoryManager : MonoBehaviour, IGameManager
 
     public void AddItem(int itemId)
     {
+        if(itemId >= Items.Count || itemId < 0)
+        {
+            throw new NoSuchItemException(itemId);
+        }
         if(!_items.ContainsKey(itemId))
         {
             _items.Add(itemId, 0);
         }
         _items[itemId]++;
-        NewItem = Items[itemId];//проверка
+        NewItem = Items[itemId];
     }
 
     public int GetCount(int itemId)

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class DialogsManager : MonoBehaviour, IGameManager
 {
+    //изменить способ нахождения имен и выведения текста
+    [SerializeField] private float DialogCooldownTime = 0.2f;
     public ManagerStatus status { get; private set; }
     public string CurrentSentence { get { return _sentences[_currentSentenceIndex]; } }
     public string CurrentPerson { get { return _persons[_currentSentenceIndex]; } }
@@ -45,6 +47,11 @@ public class DialogsManager : MonoBehaviour, IGameManager
         {
             return;
         }
+        if(persons.Length != sentences.Length)
+        {
+            throw new BadDialogParametersException("Length of persons " + persons.Length + 
+                " is not equal to sentences length " + sentences.Length);
+        }
         _currentSentenceIndex = 0;
         _sentences = sentences;
         _persons = persons;
@@ -55,14 +62,14 @@ public class DialogsManager : MonoBehaviour, IGameManager
 
     private IEnumerator StopDialog()
     {
-        yield return new WaitForSeconds(0.5f);//константа
+        yield return new WaitForSeconds(DialogCooldownTime);
 
         IsDialog = false;
     }
 
     private IEnumerator AllowPressKey()
     {
-        yield return new WaitForSeconds(0.3f);//константа
+        yield return new WaitForSeconds(DialogCooldownTime);
 
         _canPressKey = true;
     }

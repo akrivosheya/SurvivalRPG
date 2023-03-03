@@ -5,8 +5,8 @@ public class SceneManager : MonoBehaviour, IGameManager
 {
     public ManagerStatus status { get; private set; }
     [SerializeField] private float CellLength = 1f;
-    [SerializeField] private int SceneWidth = 19;
-    [SerializeField] private int SceneHeight = 19;
+    [SerializeField] private int GridWidth = 19;
+    [SerializeField] private int GridHeight = 19;
     private Dictionary<int, Vector2Int> _objectsPositions = new Dictionary<int, Vector2Int>();
     private readonly int EmptyId = 0;
     private readonly int WallId = 1;
@@ -14,22 +14,7 @@ public class SceneManager : MonoBehaviour, IGameManager
 
     public void Startup()
     {
-        _grid = new int[SceneWidth * SceneHeight];
-
-        /*for(int i = 0; i < SceneHeight; ++i)
-        {
-            for(int j = 0; j < SceneWidth; ++j)
-            {
-                if(i % (SceneHeight - 1) == 0 || j % (SceneWidth - 1) == 0)
-                {
-                    _grid[i * SceneWidth + j] = WallId;
-                }
-                else
-                {
-                    _grid[i * SceneWidth + j] = EmptyId;
-                }
-            }
-        }*/
+        _grid = new int[GridWidth * GridHeight];
 
         status = ManagerStatus.Started;
     }
@@ -39,8 +24,7 @@ public class SceneManager : MonoBehaviour, IGameManager
         fixedDirection = direction;
         if(!_objectsPositions.ContainsKey(objectId))
         {
-            //желательно обрабтать
-            return false;
+            throw new NoSuchObjectOnSceneException(objectId);
         }
         var objectPosition = _objectsPositions[objectId];
         FixDirection(objectPosition, ref fixedDirection);
@@ -48,10 +32,10 @@ public class SceneManager : MonoBehaviour, IGameManager
         {
             return false;
         }
-        _grid[objectPosition.y * SceneWidth + objectPosition.x] = EmptyId;//тут м/ю что-то особенное
+        _grid[objectPosition.y * GridWidth + objectPosition.x] = EmptyId;//тут м/ю что-то особенное
         objectPosition.x += fixedDirection.x;
         objectPosition.y += fixedDirection.y;
-        _grid[objectPosition.y * SceneWidth + objectPosition.x] = objectId;
+        _grid[objectPosition.y * GridWidth + objectPosition.x] = objectId;
         _objectsPositions[objectId] = objectPosition;
         return true;
     }
@@ -61,16 +45,21 @@ public class SceneManager : MonoBehaviour, IGameManager
         var objectPosition = new Vector2Int();
         objectPosition.x = (int)(sceneObjectPosition.x / CellLength);
         objectPosition.y = (int)(sceneObjectPosition.y / CellLength);
-        _grid[objectPosition.y * SceneWidth + objectPosition.x] = objectId;
+        if(objectPosition.x >= GridWidth || objectPosition.x < 0 || objectPosition.y >= GridHeight || objectPosition.y < 0)
+        {
+            throw new OutOfGridPositionException(objectPosition.x, objectPosition.y, GridWidth, GridHeight);
+        }
+        _grid[objectPosition.y * GridWidth + objectPosition.x] = objectId;
         _objectsPositions[objectId] = objectPosition;
     }
 
-    public void SetObjectPosition(int objectId, Vector2Int gridObjectPosition)
+    public void SetObjectPosition(int objectId, Vector2Int objectPosition)
     {
-        var objectPosition = new Vector2Int();
-        objectPosition.x = gridObjectPosition.x;
-        objectPosition.y = gridObjectPosition.y;
-        _grid[objectPosition.y * SceneWidth + objectPosition.x] = objectId;
+        if(objectPosition.x >= GridWidth || objectPosition.x < 0 || objectPosition.y >= GridHeight || objectPosition.y < 0)
+        {
+            throw new OutOfGridPositionException(objectPosition.x, objectPosition.y, GridWidth, GridHeight);
+        }
+        _grid[objectPosition.y * GridWidth + objectPosition.x] = objectId;
         _objectsPositions[objectId] = objectPosition;//не для всех объектов
     }
 
@@ -83,7 +72,7 @@ public class SceneManager : MonoBehaviour, IGameManager
     {
         if(!_objectsPositions.ContainsKey(objectId))
         {
-            return;
+            throw new NoSuchObjectOnSceneException(objectId);
         }
         SetObjectPosition(EmptyId, _objectsPositions[objectId]);
     }
@@ -98,26 +87,30 @@ public class SceneManager : MonoBehaviour, IGameManager
         return new Vector3(objectPosition.x * CellLength, objectPosition.y * CellLength);
     }
 
-    private void FixDirection(Vector2Int position, ref Vector2Int direction)
+    private void FixDirection(Vector2Int objectPosition, ref Vector2Int movement)
     {
         //обработать случай с диагональным движением
-        if(position.x + direction.x < SceneWidth && position.x + direction.x >= 0 &&
-            position.y + direction.y < SceneHeight && position.y + direction.y >= 0 &&
-            _grid[(position.y + direction.y) * SceneWidth + position.x + direction.x] != EmptyId)
+        if(objectPosition.x >= GridWidth || objectPosition.x < 0 || objectPosition.y >= GridHeight || objectPosition.y < 0)
         {
-            direction.x = 0;
-            direction.y = 0;
+            throw new OutOfGridPositionException(objectPosition.x, objectPosition.y, GridWidth, GridHeight);
+        }
+        if(objectPosition.x + movement.x < GridWidth && objectPosition.x + movement.x >= 0 &&
+            objectPosition.y + movement.y < GridHeight && objectPosition.y + movement.y >= 0 &&
+            _grid[(objectPosition.y + movement.y) * GridWidth + objectPosition.x + movement.x] != EmptyId)
+        {
+            movement.x = 0;
+            movement.y = 0;
             return;
         }
-        if(position.x + direction.x >= SceneWidth || position.x + direction.x < 0 || 
-            _grid[position.y * SceneWidth + position.x + direction.x] != EmptyId)
+        if(objectPosition.x + movement.x >= GridWidth || objectPosition.x + movement.x < 0 || 
+            _grid[objectPosition.y * GridWidth + objectPosition.x + movement.x] != EmptyId)
         {
-            direction.x = 0;
+            movement.x = 0;
         }
-        if(position.y + direction.y >= SceneHeight || position.y + direction.y < 0 || 
-            _grid[(position.y + direction.y) * SceneWidth + position.x] != EmptyId)
+        if(objectPosition.y + movement.y >= GridHeight || objectPosition.y + movement.y < 0 || 
+            _grid[(objectPosition.y + movement.y) * GridWidth + objectPosition.x] != EmptyId)
         {
-            direction.y = 0;
+            movement.y = 0;
         }
     }
 }
