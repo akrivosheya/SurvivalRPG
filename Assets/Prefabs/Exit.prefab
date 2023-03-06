@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5159024316616048551}
   - component: {fileID: 9053560564361695031}
-  - component: {fileID: 7307574070056294964}
   - component: {fileID: 1387588384243572457}
+  - component: {fileID: 7307574070056294964}
+  - component: {fileID: 1792270603176003869}
   m_Layer: 0
   m_Name: Exit
   m_TagString: Untagged
@@ -60,24 +61,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.8, y: 0.9}
   m_EdgeRadius: 0
---- !u!114 &7307574070056294964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8018905684484960616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b7727db714d8324daf5a1d1e201ea14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Camera: {fileID: 0}
-  NextExit: {fileID: 0}
-  Offset: {x: 0, y: -1, z: 0}
-  ConditionsToExit:
-  - KILL_STRANGER
-  - KILL_TREE
 --- !u!212 &1387588384243572457
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -130,3 +113,34 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7307574070056294964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8018905684484960616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b7727db714d8324daf5a1d1e201ea14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Camera: {fileID: 0}
+  NextExit: {fileID: 0}
+  Offset: {x: 0, y: -1, z: 0}
+  ConditionsToExit:
+  - KILL_STRANGER
+  - KILL_TREE
+  CameraZPosition: -10
+--- !u!114 &1792270603176003869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8018905684484960616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a179f4aa312b8264cbca8ddabf7a0a3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

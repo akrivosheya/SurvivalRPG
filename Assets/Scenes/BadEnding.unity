@@ -655,8 +655,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 554310931}
-        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
+      - m_Target: {fileID: 1166594175}
+        m_TargetAssemblyTypeName: BaseUIController, Assembly-CSharp
         m_MethodName: OnExit
         m_Mode: 1
         m_Arguments:
@@ -755,7 +755,6 @@ MonoBehaviour:
   - {fileID: 39646427}
   - {fileID: 301816650}
   - {fileID: 621410230}
-  Creators: {fileID: 621410230}
   Button: {fileID: 398638783}
   BlurSpeed: 0.3
   TextSpeed: 6
@@ -771,7 +770,6 @@ GameObject:
   - component: {fileID: 554310929}
   - component: {fileID: 554310928}
   - component: {fileID: 554310927}
-  - component: {fileID: 554310931}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -858,6 +856,7 @@ RectTransform:
   - {fileID: 301816649}
   - {fileID: 621410229}
   - {fileID: 398638782}
+  - {fileID: 1166594174}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -866,22 +865,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &554310931
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 554310926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa073b44fdbbe6c4799ebb2ef4e062d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NewItem: {fileID: 0}
-  DialogWindow: {fileID: 0}
-  Dialog: {fileID: 0}
-  Person: {fileID: 0}
 --- !u!1 &621410228
 GameObject:
   m_ObjectHideFlags: 0
@@ -963,6 +946,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 621410228}
   m_CullTransparentMesh: 1
+--- !u!1 &1166594173
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1166594174}
+  - component: {fileID: 1166594175}
+  m_Layer: 5
+  m_Name: UIController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1166594174
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166594173}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 554310930}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1166594175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166594173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96c9f8e31f8ceed4ea4948f579c8efbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SceneForLoading: 
 --- !u!1 &1445651202
 GameObject:
   m_ObjectHideFlags: 0

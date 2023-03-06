@@ -2,12 +2,14 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIController : MonoBehaviour
+public class UIController : BaseUIController
 {
     [SerializeField] private Text NewItem;
     [SerializeField] private GameObject DialogWindow;
     [SerializeField] private Text Dialog;
     [SerializeField] private Text Person;
+    [SerializeField] private float WaitToClearTextSeconds = 1;
+    private string _emptyText = "";
 
     void Awake()
     {
@@ -32,12 +34,12 @@ public class UIController : MonoBehaviour
             return;
         }
         DialogWindow.SetActive(false);
-        NewItem.text = "";//константы
+        NewItem.text = _emptyText;
     }
 
     public void OnItemAdded()
     {
-        NewItem.text = "You got " + Managers.Inventory.NewItem;//константы
+        NewItem.text = "You got " + Managers.Inventory.NewItem;
         StartCoroutine(ClearText(NewItem));
     }
 
@@ -59,21 +61,10 @@ public class UIController : MonoBehaviour
         DialogWindow.SetActive(false);
     }
 
-    public void OnStart()
-    {
-        
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainGame");//Managers.Levels.LoadScene(0);//что-то конкретное
-    }
-
-    public void OnExit()
-    {
-        Application.Quit();
-    }
-
     private IEnumerator ClearText(Text text)
     {
-        yield return new WaitForSeconds(1);//константы
+        yield return new WaitForSeconds(WaitToClearTextSeconds);
 
-        text.text = "";//константы
+        text.text = _emptyText;
     }
 }

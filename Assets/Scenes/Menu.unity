@@ -291,7 +291,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1226059744}
-        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
+        m_TargetAssemblyTypeName: BaseUIController, Assembly-CSharp
         m_MethodName: OnExit
         m_Mode: 1
         m_Arguments:
@@ -628,7 +628,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1226059744}
-        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
+        m_TargetAssemblyTypeName: BaseUIController, Assembly-CSharp
         m_MethodName: OnStart
         m_Mode: 1
         m_Arguments:
@@ -718,13 +718,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1226059742}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa073b44fdbbe6c4799ebb2ef4e062d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 96c9f8e31f8ceed4ea4948f579c8efbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NewItem: {fileID: 0}
-  DialogWindow: {fileID: 0}
-  Dialog: {fileID: 0}
-  Person: {fileID: 0}
+  SceneForLoading: MainGame
 --- !u!1 &1595682306
 GameObject:
   m_ObjectHideFlags: 0

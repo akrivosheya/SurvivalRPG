@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StrangerBehaviour : MonoBehaviour
@@ -10,32 +8,25 @@ public class StrangerBehaviour : MonoBehaviour
 
     void Awake()
     {
-        Messenger.AddListener("WAKE_UP_STRANGER", OnWakeUpStranger);
         Messenger.AddListener("KILL_STRANGER", OnStrangerKilled);
-        Messenger.AddListener("HAS_AXE", OnHasAxe);
+        Messenger.AddListener("GOT_AXE", OnGotAxe);
     }
 
     void OnDestroy()
     {
-        Messenger.RemoveListener("WAKE_UP_STRANGER", OnWakeUpStranger);
         Messenger.RemoveListener("KILL_STRANGER", OnStrangerKilled);
-        Messenger.RemoveListener("HAS_AXE", OnHasAxe);
+        Messenger.RemoveListener("GOT_AXE", OnGotAxe);
     }
 
     public void OnStrangerKilled()
     {
         Stranger.SetActive(false);
         KilledStranger.SetActive(true);
-        Messenger.Broadcast("BAD_ENDING");
-        Managers.Audios.PlayHeartSound();
+        Managers.Audios.PlayOneShotSound(AudioClipsId.HEARTBEAT);
     }
 
-    public void OnHasAxe()
+    public void OnGotAxe()
     {
-        animator.SetBool("HAS_AXE", true);
-    }
-
-    public void OnWakeUpStranger()
-    {
+        animator.SetBool("NO_AXE", true);
     }
 }
