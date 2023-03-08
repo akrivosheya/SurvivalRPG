@@ -22,11 +22,9 @@ public class Interacting : MonoBehaviour
         {
             return;
         }
-        var xAxis = Input.GetAxis("Horizontal");
-        var yAxis = Input.GetAxis("Vertical");
         var axises = new Vector2Int();
-        axises.x = (int)((Mathf.Approximately(xAxis, 0)) ? 0 : Mathf.Sign(xAxis));
-        axises.y = (int)((Mathf.Approximately(yAxis, 0)) ? 0 : Mathf.Sign(yAxis));
+        axises.x = (int)(Input.GetAxisRaw("Horizontal"));
+        axises.y = (int)(Input.GetAxisRaw("Vertical"));
         if(!axises.Equals(Vector2Int.zero) && _direction != axises)
         {
             _direction = axises;

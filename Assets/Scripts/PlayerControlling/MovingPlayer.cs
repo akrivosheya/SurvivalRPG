@@ -5,16 +5,11 @@ using UnityEngine;
 public class MovingPlayer : MonoBehaviour
 {
     [SerializeField] private float Speed = 6f;
-    [SerializeField] private float SmoothingSpeed = 0.1f;
-    [SerializeField] private float PositionRate = 0.5f;
     [SerializeField] private float ZYOffset = 0.2f;
-    [SerializeField] private float AxisLimit = 0.5f;
     private Animator _animator;
     private ObjectData _objectData;
     private Vector3 _nextPosition;
     private Vector2Int _movement;
-    private Vector3 _smoothingVelocity = Vector3.zero;
-    private float _distanceToPosition;
     private bool _isMoving = false;
 
     void Start()
@@ -33,11 +28,8 @@ public class MovingPlayer : MonoBehaviour
             _animator.SetInteger("movement", (int)AnimatorParameters.Stop);
             return;
         }
-
-        var xAxis = Input.GetAxis("Horizontal");
-        var yAxis = Input.GetAxis("Vertical");
-        _movement.x = (int)((Mathf.Abs(xAxis) < AxisLimit) ? 0 : Mathf.Sign(xAxis));
-        _movement.y = (int)((Mathf.Abs(yAxis) < AxisLimit) ? 0 : Mathf.Sign(yAxis));
+        _movement.x = (int)(Input.GetAxisRaw("Horizontal"));
+        _movement.y = (int)(Input.GetAxisRaw("Vertical"));
         if(_isMoving)
         {
             Move();
@@ -68,16 +60,16 @@ public class MovingPlayer : MonoBehaviour
         movement.Normalize();
         movement = movement * Speed * Time.deltaTime;
         transform.Translate(movement);
-        var newDistance = Vector2.Distance(transform.position, _nextPosition);
-        if(newDistance < PositionRate)
+        if(Vector3.Dot(movement, _nextPosition - transform.position) <= 0)
         {
-            if(newDistance > _distanceToPosition)
+            if(_movement.Equals(Vector2Int.zero))
             {
+                transform.position = _nextPosition;
                 _isMoving = false;
             }
             else
             {
-                _distanceToPosition = newDistance;
+                TryStartMoving();
             }
         }
     }
@@ -86,10 +78,7 @@ public class MovingPlayer : MonoBehaviour
     {
         if(_movement.Equals(Vector2Int.zero) || !Managers.Scene.TryMoveObject((int)_objectData.Id, _movement, out Vector2Int fixedMovement))
         {
-            if(!transform.position.Equals(_nextPosition))
-            {
-                transform.position = Vector3.SmoothDamp(transform.position, _nextPosition, ref _smoothingVelocity, SmoothingSpeed);
-            }
+            return;
         }
         else
         {
