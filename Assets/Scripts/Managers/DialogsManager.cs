@@ -23,9 +23,9 @@ public class DialogsManager : MonoBehaviour, IGameManager
 
     void Update()
     {
-        if(IsDialog && _canPressKey)
+        if(IsDialog && _canPressKey && !Managers.Conditions["IS_PAUSE"])
         {
-            if(Input.anyKeyDown)
+            if(Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape))
             {
                 _canPressKey = false;
                 ++_currentSentenceIndex;

@@ -6,6 +6,7 @@ public class UIController : BaseUIController
 {
     [SerializeField] private Text NewItem;
     [SerializeField] private GameObject DialogWindow;
+    [SerializeField] private GameObject PauseWindow;
     [SerializeField] private Text Dialog;
     [SerializeField] private Text PersonName;
     [SerializeField] private Image PersonImage;
@@ -37,7 +38,16 @@ public class UIController : BaseUIController
             return;
         }
         DialogWindow.SetActive(false);
+        PauseWindow.SetActive(false);
         NewItem.text = _emptyText;
+    }
+
+    void LateUpdate()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape) && !Managers.Conditions["IS_ENDING"])
+        {
+            OnPause();
+        }
     }
 
     public void OnItemAdded()
@@ -50,6 +60,18 @@ public class UIController : BaseUIController
     {
         DialogWindow.SetActive(true);
         OnDialogNextSentence();
+    }
+
+    public void OnPause()
+    {
+        PauseWindow.SetActive(true);
+        Managers.Conditions.AddCondition("IS_PAUSE");
+    }
+
+    public void OnResume()
+    {
+        PauseWindow.SetActive(false);
+        Managers.Conditions.DeleteCondition("IS_PAUSE");
     }
 
     public void OnDialogNextSentence()

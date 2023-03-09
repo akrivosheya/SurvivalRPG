@@ -18,7 +18,7 @@ public class Interacting : MonoBehaviour
 
     void Update()
     {
-        if(Managers.Dialogs.IsDialog || Managers.Conditions["START_ENDING"])
+        if(Managers.Dialogs.IsDialog || Managers.Conditions["START_ENDING"] || Managers.Conditions["IS_PAUSE"])
         {
             return;
         }
