@@ -7,11 +7,13 @@ public class DialogPoint : MonoBehaviour, Interactable
 {
     [SerializeField] private List<string> AllConditions;
     [SerializeField] private List<string> Dialogs;
-    [SerializeField] private List<string> Persons;
+    [SerializeField] private List<string> PersonsNames;
+    [SerializeField] private List<string> PersonsImages;
     [SerializeField] private List<string> NewConditions;
     [SerializeField] private List<string> DeletingConditions;
     [SerializeField] private List<string> Messages;
     [SerializeField] private char SplitCharacter;
+    private readonly string EmptyString = "";
     private ObjectData _objectData;
 
     void Start()
@@ -50,9 +52,13 @@ public class DialogPoint : MonoBehaviour, Interactable
             }
             foreach(var message in Messages[i].Split(SplitCharacter))
             {
+                if(message.Equals(EmptyString))
+                {
+                    continue;
+                }
                 Messenger.Broadcast(message);
             }
-            Managers.Dialogs.StartDialog(Dialogs[i].Split(SplitCharacter), Persons[i].Split(SplitCharacter));
+            Managers.Dialogs.StartDialog(Dialogs[i].Split(SplitCharacter), PersonsNames[i].Split(SplitCharacter), PersonsImages[i].Split(SplitCharacter));
             break;
         }
     }

@@ -7,7 +7,10 @@ public class UIController : BaseUIController
     [SerializeField] private Text NewItem;
     [SerializeField] private GameObject DialogWindow;
     [SerializeField] private Text Dialog;
-    [SerializeField] private Text Person;
+    [SerializeField] private Text PersonName;
+    [SerializeField] private Image PersonImage;
+    [SerializeField] private Color NoPersonColor;
+    [SerializeField] private Color PersonColor;
     [SerializeField] private float WaitToClearTextSeconds = 1;
     private string _emptyText = "";
 
@@ -46,14 +49,23 @@ public class UIController : BaseUIController
     public void OnDialogStarted()
     {
         DialogWindow.SetActive(true);
-        Dialog.text = Managers.Dialogs.CurrentSentence;
-        Person.text = Managers.Dialogs.CurrentPerson;
+        OnDialogNextSentence();
     }
 
     public void OnDialogNextSentence()
     {
         Dialog.text = Managers.Dialogs.CurrentSentence;
-        Person.text = Managers.Dialogs.CurrentPerson;
+        PersonName.text = Managers.Dialogs.CurrentPersonName;
+        if(Managers.Dialogs.CurrentPersonImage.Equals(_emptyText))
+        {
+            PersonImage.color = NoPersonColor;
+            PersonImage.sprite = null;
+        }
+        else
+        {
+            PersonImage.color = PersonColor;
+            PersonImage.sprite = Resources.Load<Sprite>(Managers.Dialogs.CurrentPersonImage);
+        }
     }
 
     public void OnDialogEnded()

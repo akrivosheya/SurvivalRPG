@@ -25,7 +25,6 @@ public class MovingPlayer : MonoBehaviour
     {
         if(Managers.Dialogs.IsDialog || Managers.Conditions["START_ENDING"])
         {
-            _animator.SetInteger("movement", (int)AnimatorParameters.Stop);
             return;
         }
         _movement.x = (int)(Input.GetAxisRaw("Horizontal"));
@@ -78,7 +77,7 @@ public class MovingPlayer : MonoBehaviour
     {
         if(_movement.Equals(Vector2Int.zero) || !Managers.Scene.TryMoveObject((int)_objectData.Id, _movement, out Vector2Int fixedMovement))
         {
-            return;
+            _isMoving = false;
         }
         else
         {
@@ -92,32 +91,9 @@ public class MovingPlayer : MonoBehaviour
     {
         if(!Managers.Dialogs.IsDialog && !Managers.Conditions["START_ENDING"])//очень плохо
         {
-            if(_movement.Equals(Vector2Int.zero))
-            {
-                _animator.SetInteger("movement", (int)AnimatorParameters.Stop);
-            }
-            else if(_movement.x != 0)
-            {    
-                if(_movement.x > 0)
-                {
-                    _animator.SetInteger("movement", (int)AnimatorParameters.MovingRight);//плохо и дальше
-                }
-                else
-                {
-                    _animator.SetInteger("movement", (int)AnimatorParameters.MovingLeft);
-                }
-            }
-            else if(_movement.y != 0)
-            {
-                if(_movement.y > 0)
-                {
-                    _animator.SetInteger("movement", (int)AnimatorParameters.MovingUp);
-                }
-                else
-                {
-                    _animator.SetInteger("movement", (int)AnimatorParameters.MovingDown);
-                }
-            }
+            _animator.SetInteger("directionX", _movement.x);
+            _animator.SetInteger("directionY", _movement.y);
+            _animator.SetBool("isMoving", _isMoving);
         }
     }
 }

@@ -7,10 +7,12 @@ public class DialogsManager : MonoBehaviour, IGameManager
     [SerializeField] private float DialogCooldownTime = 0.2f;
     public ManagerStatus status { get; private set; }
     public string CurrentSentence { get { return _sentences[_currentSentenceIndex]; } }
-    public string CurrentPerson { get { return _persons[_currentSentenceIndex]; } }
+    public string CurrentPersonName { get { return _personsNames[_currentSentenceIndex]; } }
+    public string CurrentPersonImage { get { return _personsImages[_currentSentenceIndex]; } }
     public bool IsDialog { get; private set; } = false;
     private string[] _sentences;
-    private string[] _persons;
+    private string[] _personsNames;
+    private string[] _personsImages;
     private int _currentSentenceIndex;
     private bool _canPressKey = false;
 
@@ -41,20 +43,26 @@ public class DialogsManager : MonoBehaviour, IGameManager
         }
     }
 
-    public void StartDialog(string[] sentences, string[] persons)
+    public void StartDialog(string[] sentences, string[] personsNames, string[] personsImages)
     {
         if(sentences.Length <= 0)
         {
             return;
         }
-        if(persons.Length != sentences.Length)
+        if(personsNames.Length != sentences.Length)
         {
-            throw new BadDialogParametersException("Length of persons " + persons.Length + 
+            throw new BadDialogParametersException("Length of persons names " + personsNames.Length + 
+                " is not equal to sentences length " + sentences.Length);
+        }
+        if(personsImages.Length != sentences.Length)
+        {
+            throw new BadDialogParametersException("Length of persons images " + personsImages.Length + 
                 " is not equal to sentences length " + sentences.Length);
         }
         _currentSentenceIndex = 0;
         _sentences = sentences;
-        _persons = persons;
+        _personsNames = personsNames;
+        _personsImages = personsImages;
         IsDialog = true;
         Messenger.Broadcast(GameEvent.DIALOG_STARTED);
         StartCoroutine(AllowPressKey());
