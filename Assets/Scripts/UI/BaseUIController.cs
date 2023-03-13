@@ -6,12 +6,19 @@ public class BaseUIController : MonoBehaviour
 
     public void OnStart()
     {
-        
         UnityEngine.SceneManagement.SceneManager.LoadScene(SceneForLoading);
     }
 
     public void OnExit()
     {
         Application.Quit();
+    }
+
+    public virtual void OnBack()
+    {
+    }
+
+    public virtual void OnNext()
+    {
     }
 }
