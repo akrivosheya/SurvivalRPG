@@ -13,6 +13,8 @@ public class DialogPoint : MonoBehaviour, Interactable
     [SerializeField] private List<string> DeletingConditions;
     [SerializeField] private List<string> Messages;
     [SerializeField] private char SplitCharacter;
+    [SerializeField] private int Width;
+    [SerializeField] private int Height;
     [SerializeField] private GameObject DialogBehaviour;
     private Behaviour _behaviour;
     private readonly string EmptyString = "";
@@ -24,7 +26,20 @@ public class DialogPoint : MonoBehaviour, Interactable
         _behaviour = DialogBehaviour.GetComponent<Behaviour>();
         _objectData = GetComponent<ObjectData>();
         _objectData.Id = ObjectsId.DialogPoint;
-        Managers.Scene.SetObjectPosition((int)_objectData.Id, transform.position);
+        var offset = Vector3.zero;
+        Debug.Log((-Width / 2) + " " + (Width / 2) + " " + (-Height / 2) + " " + (Height / 2));
+        for(int i = -Width / 2; i <= Width / 2; ++i)
+        {
+            for(int j = -Height / 2; j <= Height / 2; ++j)
+            {
+                offset.x = i;
+                offset.y = j;
+                offset.z = j;
+                //Debug.Log("set " + name + " to " + transform.position + offset);
+                Managers.Scene.SetObjectPosition((int)_objectData.Id, transform.position + offset);
+            }
+        }
+        //Managers.Scene.SetObjectPosition((int)_objectData.Id, transform.position);
     }
 
     void LateUpdate()
