@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class StrangerBehaviour : MonoBehaviour
+public class StrangerBehaviour : MonoBehaviour, Behaviour
 {
     [SerializeField] private GameObject Stranger;
     [SerializeField] private GameObject KilledStranger;
@@ -8,14 +8,24 @@ public class StrangerBehaviour : MonoBehaviour
 
     void Awake()
     {
-        Messenger.AddListener("KILL_STRANGER", OnStrangerKilled);
-        Messenger.AddListener("GOT_AXE", OnGotAxe);
+        Messenger.AddListener(GameEvent.KILL_STRANGER, OnStrangerKilled);
+        Messenger.AddListener(GameEvent.GOT_AXE, OnGotAxe);
     }
 
     void OnDestroy()
     {
-        Messenger.RemoveListener("KILL_STRANGER", OnStrangerKilled);
-        Messenger.RemoveListener("GOT_AXE", OnGotAxe);
+        Messenger.RemoveListener(GameEvent.KILL_STRANGER, OnStrangerKilled);
+        Messenger.RemoveListener(GameEvent.GOT_AXE, OnGotAxe);
+    }
+
+    public void OnInteraction()
+    {
+        animator.SetBool("IS_INTERACTABLE", true);
+    }
+
+    public void OnNoInteraction()
+    {
+        animator.SetBool("IS_INTERACTABLE", false);
     }
 
     public void OnStrangerKilled()

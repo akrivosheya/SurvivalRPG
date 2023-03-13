@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TreeBehaviour : MonoBehaviour
+public class TreeBehaviour : MonoBehaviour, Behaviour
 {
     [SerializeField] private GameObject Tree;
     [SerializeField] private GameObject DeadTree;
@@ -8,14 +8,24 @@ public class TreeBehaviour : MonoBehaviour
 
     void Awake()
     {
-        Messenger.AddListener("WAKE_UP_TREE", OnTreeWakeUp);
-        Messenger.AddListener("KILL_TREE", OnTreeKill);
+        Messenger.AddListener(GameEvent.WAKE_UP_TREE, OnTreeWakeUp);
+        Messenger.AddListener(GameEvent.KILL_TREE, OnTreeKill);
     }
 
     void OnDestroy()
     {
-        Messenger.RemoveListener("WAKE_UP_TREE", OnTreeWakeUp);
-        Messenger.RemoveListener("KILL_TREE", OnTreeKill);
+        Messenger.RemoveListener(GameEvent.WAKE_UP_TREE, OnTreeWakeUp);
+        Messenger.RemoveListener(GameEvent.KILL_TREE, OnTreeKill);
+    }
+
+    public void OnInteraction()
+    {
+        animator.SetBool("IS_INTERACTABLE", true);
+    }
+
+    public void OnNoInteraction()
+    {
+        animator.SetBool("IS_INTERACTABLE", false);
     }
 
     public void OnTreeWakeUp()

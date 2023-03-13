@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: stranget_with_axe
+  m_Name: stranger_without_axe_stroke
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,9 +20,9 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 227787864, guid: f18c03e300ce7554c978d838d37a2559, type: 3}
+      value: {fileID: 466571443, guid: 0daab12e1a995614780da5cdaf9d9a59, type: 3}
     - time: 0.083333336
-      value: {fileID: 1824371019, guid: f18c03e300ce7554c978d838d37a2559, type: 3}
+      value: {fileID: 563984689, guid: 0daab12e1a995614780da5cdaf9d9a59, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -42,8 +42,8 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 227787864, guid: f18c03e300ce7554c978d838d37a2559, type: 3}
-    - {fileID: 1824371019, guid: f18c03e300ce7554c978d838d37a2559, type: 3}
+    - {fileID: 466571443, guid: 0daab12e1a995614780da5cdaf9d9a59, type: 3}
+    - {fileID: 563984689, guid: 0daab12e1a995614780da5cdaf9d9a59, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

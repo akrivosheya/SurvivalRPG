@@ -13,14 +13,40 @@ public class DialogPoint : MonoBehaviour, Interactable
     [SerializeField] private List<string> DeletingConditions;
     [SerializeField] private List<string> Messages;
     [SerializeField] private char SplitCharacter;
+    [SerializeField] private GameObject DialogBehaviour;
+    private Behaviour _behaviour;
     private readonly string EmptyString = "";
     private ObjectData _objectData;
+    private bool _showingInteraction = false;
 
     void Start()
     {
+        _behaviour = DialogBehaviour.GetComponent<Behaviour>();
         _objectData = GetComponent<ObjectData>();
         _objectData.Id = ObjectsId.DialogPoint;
         Managers.Scene.SetObjectPosition((int)_objectData.Id, transform.position);
+    }
+
+    void LateUpdate()
+    {
+        if(_behaviour == null || Managers.Dialogs.IsDialog)
+        {
+            return;
+        }
+        if(_showingInteraction)
+        {
+            _behaviour.OnInteraction();
+            _showingInteraction = false;
+        }
+        else
+        {
+            _behaviour.OnNoInteraction();
+        }
+    }
+
+    public void ShowInteraction()
+    {
+        _showingInteraction = true;
     }
 
     public void Interact(int interactingId)

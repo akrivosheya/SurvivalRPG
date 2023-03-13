@@ -20,6 +20,10 @@ public class SelectingObject : MonoBehaviour, Item, Interactable
         Managers.Scene.SetObjectPosition((int)_objectData.Id, transform.position);
     }
 
+    public void ShowInteraction()
+    {
+    }
+
     public void Interact(int interactingId)
     {
         var canBeInteracted = true;

@@ -29,19 +29,20 @@ public class Interacting : MonoBehaviour
         {
             _direction = axises;
         }
-        if(Input.GetKeyDown(KeyCode.E))
+        var offset = new Vector3(_direction.x, _direction.y, 0);
+        offset.x += Mathf.Sign(offset.x) * OverlapOffset;
+        offset.y += Mathf.Sign(offset.y) * OverlapOffset;
+        var maxBounds = _boxCollider.bounds.max;
+        var minBounds = _boxCollider.bounds.min;
+        var corner1 = new Vector2(maxBounds.x + offset.x, maxBounds.y + offset.y);
+        var corner2 = new Vector2(minBounds.x + offset.x, minBounds.y + offset.y);
+        Collider2D hit = Physics2D.OverlapArea(corner1, corner2);
+        if(hit != null)
         {
-            var offset = new Vector3(_direction.x, _direction.y, 0);
-            offset.x += Mathf.Sign(offset.x) * OverlapOffset;
-            offset.y += Mathf.Sign(offset.y) * OverlapOffset;
-            var maxBounds = _boxCollider.bounds.max;
-            var minBounds = _boxCollider.bounds.min;
-            var corner1 = new Vector2(maxBounds.x + offset.x, maxBounds.y + offset.y);
-            var corner2 = new Vector2(minBounds.x + offset.x, minBounds.y + offset.y);
-            Collider2D hit = Physics2D.OverlapArea(corner1, corner2);
-            if(hit != null)
+            if(hit.gameObject.TryGetComponent<Interactable>(out Interactable interactable))
             {
-                if(hit.gameObject.TryGetComponent<Interactable>(out Interactable interactable))
+                interactable.ShowInteraction();
+                if(Input.GetKeyDown(KeyCode.E))
                 {
                     interactable.Interact((int)_objectData.Id);
                 }
