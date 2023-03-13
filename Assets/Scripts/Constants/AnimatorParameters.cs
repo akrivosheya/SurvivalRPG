@@ -1,4 +1,4 @@
-public enum AnimatorParameters:int
+public enum AnimatorParameters:int//нужен статический класс с параметрами
 {
     Stop = 0,
     MovingDown = 1,

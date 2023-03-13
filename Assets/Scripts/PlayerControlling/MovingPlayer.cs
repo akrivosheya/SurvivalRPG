@@ -10,6 +10,7 @@ public class MovingPlayer : MonoBehaviour
     private ObjectData _objectData;
     private Vector3 _nextPosition;
     private Vector2Int _movement;
+    private Vector2Int _fixedMovement;
     private bool _isMoving = false;
 
     void Start()
@@ -75,7 +76,7 @@ public class MovingPlayer : MonoBehaviour
 
     private void TryStartMoving()
     {
-        if(_movement.Equals(Vector2Int.zero) || !Managers.Scene.TryMoveObject((int)_objectData.Id, _movement, out Vector2Int fixedMovement))
+        if(_movement.Equals(Vector2Int.zero) || !Managers.Scene.TryMoveObject((int)_objectData.Id, _movement, out _fixedMovement))
         {
             _isMoving = false;
         }
@@ -92,7 +93,14 @@ public class MovingPlayer : MonoBehaviour
         if(!Managers.Dialogs.IsDialog && !Managers.Conditions["START_ENDING"])//очень плохо
         {
             _animator.SetInteger("directionX", _movement.x);
-            _animator.SetInteger("directionY", _movement.y);
+            if(_movement.x == 0)
+            {
+                _animator.SetInteger("directionY", _movement.y);
+            }
+            else
+            {
+                _animator.SetInteger("directionY", 0);
+            }
             _animator.SetBool("isMoving", _isMoving);
         }
     }

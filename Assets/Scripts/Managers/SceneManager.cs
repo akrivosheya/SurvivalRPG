@@ -108,7 +108,8 @@ public class SceneManager : MonoBehaviour, IGameManager
             movement.x = 0;
         }
         if(objectPosition.y + movement.y >= GridHeight || objectPosition.y + movement.y < 0 || 
-            _grid[(objectPosition.y + movement.y) * GridWidth + objectPosition.x] != EmptyId)
+            _grid[(objectPosition.y + movement.y) * GridWidth + objectPosition.x] != EmptyId ||
+            movement.x != 0)
         {
             movement.y = 0;
         }
