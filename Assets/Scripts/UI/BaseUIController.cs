@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class BaseUIController : MonoBehaviour
 {
-    [SerializeField] private string SceneForLoading;
+    [SerializeField] protected string SceneForLoading;
 
-    public void OnStart()
+    public virtual void OnStart()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(SceneForLoading);
     }
 
-    public void OnExit()
+    public virtual void OnExit()
     {
         Application.Quit();
     }

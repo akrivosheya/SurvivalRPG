@@ -27,7 +27,6 @@ public class DialogPoint : MonoBehaviour, Interactable
         _objectData = GetComponent<ObjectData>();
         _objectData.Id = ObjectsId.DialogPoint;
         var offset = Vector3.zero;
-        Debug.Log((-Width / 2) + " " + (Width / 2) + " " + (-Height / 2) + " " + (Height / 2));
         for(int i = -Width / 2; i <= Width / 2; ++i)
         {
             for(int j = -Height / 2; j <= Height / 2; ++j)

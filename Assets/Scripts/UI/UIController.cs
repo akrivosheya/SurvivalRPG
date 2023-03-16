@@ -50,6 +50,11 @@ public class UIController : BaseUIController
         }
     }
 
+    public override void OnExit()
+    {
+        Managers.Levels.LoadScene(SceneForLoading);
+    }
+
     public void OnItemAdded()
     {
         NewItem.text = "You got " + Managers.Inventory.NewItem;

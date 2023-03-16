@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MovingPlayer : MonoBehaviour
 {
+    [SerializeField] private Vector3 StartPosition;
     [SerializeField] private float Speed = 6f;
     [SerializeField] private float ZYOffset = 0.2f;
     private Animator _animator;
@@ -18,8 +19,9 @@ public class MovingPlayer : MonoBehaviour
         _animator = GetComponent<Animator>();
         _objectData = GetComponent<ObjectData>();
         _objectData.Id = ObjectsId.Player;
-        Managers.Scene.SetObjectPosition((int)_objectData.Id, transform.position);
-        _nextPosition = transform.position;
+        Managers.Scene.SetObjectPosition((int)_objectData.Id, StartPosition);
+        _nextPosition = StartPosition;
+        _isMoving = true;
     }
 
     void Update()
@@ -58,6 +60,7 @@ public class MovingPlayer : MonoBehaviour
     {
         var movement = _nextPosition - transform.position;
         movement.Normalize();
+        //Debug.Log("speed: " + movement * Speed * Time.deltaTime + "; current: " + transform.position + "; next: " + _nextPosition);
         movement = movement * Speed * Time.deltaTime;
         transform.Translate(movement);
         if(Vector3.Dot(movement, _nextPosition - transform.position) <= 0)

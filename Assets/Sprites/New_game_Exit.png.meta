@@ -120,8 +120,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 42
-        width: 66
+        y: 63
+        width: 90
         height: 21
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 21
-        width: 66
+        y: 42
+        width: 90
         height: 21
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -162,8 +162,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 66
+        y: 21
+        width: 90
         height: 21
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -174,6 +174,27 @@ TextureImporter:
       bones: []
       spriteID: e5628100d38b6f54b8c2701ec50132a2
       internalID: -1981766792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: New_game_Exit_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 90
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a68fe78b77aec524594746720618dd46
+      internalID: -621704876
       vertices: []
       indices: 
       edges: []
@@ -190,6 +211,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       New_game_Exit_2: -1981766792
+      New_game_Exit_3: -621704876
       New_game_Exit_0: -890007908
       New_game_Exit_1: -1938360136
   spritePackingTag: 
