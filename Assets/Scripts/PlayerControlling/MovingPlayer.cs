@@ -8,6 +8,9 @@ public class MovingPlayer : MonoBehaviour
     [SerializeField] private float Speed = 6f;
     [SerializeField] private float ZYOffset = 0.2f;
     private Animator _animator;
+    private Collider2D[] _overlapedColliders = new Collider2D[1];
+    private BoxCollider2D _collider;
+    private ContactFilter2D _filter = new ContactFilter2D();
     private ObjectData _objectData;
     private Vector3 _nextPosition;
     private Vector2Int _movement;
@@ -16,6 +19,7 @@ public class MovingPlayer : MonoBehaviour
 
     void Start()
     {
+        _collider = GetComponent<BoxCollider2D>();
         _animator = GetComponent<Animator>();
         _objectData = GetComponent<ObjectData>();
         _objectData.Id = ObjectsId.Player;
@@ -60,8 +64,8 @@ public class MovingPlayer : MonoBehaviour
     {
         var movement = _nextPosition - transform.position;
         movement.Normalize();
-        //Debug.Log("speed: " + movement * Speed * Time.deltaTime + "; current: " + transform.position + "; next: " + _nextPosition);
-        movement = movement * Speed * Time.deltaTime;
+        var currentSpeed = GetCurrentSpeed();
+        movement = movement * currentSpeed * Time.deltaTime;
         transform.Translate(movement);
         if(Vector3.Dot(movement, _nextPosition - transform.position) <= 0)
         {
@@ -75,6 +79,18 @@ public class MovingPlayer : MonoBehaviour
                 TryStartMoving();
             }
         }
+    }
+
+    private float GetCurrentSpeed()
+    {
+        if(_collider.OverlapCollider(_filter.NoFilter(), _overlapedColliders) > 0)
+        {
+            if(_overlapedColliders[0].gameObject.TryGetComponent<SpeedSetter>(out SpeedSetter speedSetter))
+            {
+                return speedSetter.Speed;
+            }
+        }
+        return Speed;
     }
 
     private void TryStartMoving()
