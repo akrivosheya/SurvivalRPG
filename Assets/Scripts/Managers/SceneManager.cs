@@ -40,6 +40,14 @@ public class SceneManager : MonoBehaviour, IGameManager
         return true;
     }
 
+    public void RawSetObjectPosition(int objectId, Vector3 sceneObjectPosition)
+    {
+        var objectPosition = new Vector2Int();
+        objectPosition.x = (int)(sceneObjectPosition.x / CellLength);
+        objectPosition.y = (int)(sceneObjectPosition.y / CellLength);
+        _objectsPositions[objectId] = objectPosition;
+    }
+
     public void SetObjectPosition(int objectId, Vector3 sceneObjectPosition)
     {
         var objectPosition = new Vector2Int();

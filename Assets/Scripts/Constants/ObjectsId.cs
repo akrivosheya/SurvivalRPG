@@ -5,5 +5,6 @@ public enum ObjectsId:int
     Player = 2,
     Selecting = 3,
     DialogPoint = 4,
-    Exit = 5
+    Exit = 5,
+    NPC = 6
 }

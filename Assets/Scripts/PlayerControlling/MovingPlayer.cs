@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(ObjectData))]
@@ -11,6 +12,7 @@ public class MovingPlayer : MonoBehaviour
     private Collider2D[] _overlapedColliders = new Collider2D[1];
     private BoxCollider2D _collider;
     private ContactFilter2D _filter = new ContactFilter2D();
+    private List<MovingNPC> _npcs = new List<MovingNPC>();
     private ObjectData _objectData;
     private Vector3 _nextPosition;
     private Vector2Int _movement;
@@ -58,9 +60,20 @@ public class MovingPlayer : MonoBehaviour
         _isMoving = false;
         transform.position = transformPosition;
         _nextPosition = transformPosition;
+        foreach(var npc in _npcs)
+        {
+            npc.SetTo(transformPosition);
+        }
     }
 
-    private void Move()
+    public void AddNpc(GameObject npcPrefab)
+    {
+        var newNpc = Instantiate(npcPrefab);
+        newNpc.transform.position = transform.position;
+        _npcs.Add(newNpc.GetComponent<MovingNPC>());//проверки
+    }
+
+    private void Move()//м/б отдельным компонентом
     {
         var movement = _nextPosition - transform.position;
         movement.Normalize();
