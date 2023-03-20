@@ -36,4 +36,19 @@ public class InventoryManager : MonoBehaviour, IGameManager
         }
         return _items[itemId];
     }
+
+    public IEnumerator<int> GetEnumerator()
+    {
+        foreach(var id in _items.Keys)
+        {
+            if(_items[id] > 0)
+            {
+                yield return id;
+            }
+            else
+            {
+                continue;
+            }
+        }
+    }
 }

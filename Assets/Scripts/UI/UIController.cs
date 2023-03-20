@@ -17,7 +17,6 @@ public class UIController : BaseUIController
 
     void Awake()
     {
-        Messenger.AddListener(GameEvent.ITEM_ADDED, OnItemAdded);
         Messenger.AddListener(GameEvent.DIALOG_STARTED, OnDialogStarted);
         Messenger.AddListener(GameEvent.DIALOG_ENDED, OnDialogEnded);
         Messenger.AddListener(GameEvent.DIALOG_NEXT_SENTENCE, OnDialogNextSentence);
@@ -25,7 +24,6 @@ public class UIController : BaseUIController
 
     void OnDestroy()
     {
-        Messenger.RemoveListener(GameEvent.ITEM_ADDED, OnItemAdded);
         Messenger.RemoveListener(GameEvent.DIALOG_STARTED, OnDialogStarted);
         Messenger.RemoveListener(GameEvent.DIALOG_ENDED, OnDialogEnded);
         Messenger.RemoveListener(GameEvent.DIALOG_NEXT_SENTENCE, OnDialogNextSentence);
@@ -53,12 +51,6 @@ public class UIController : BaseUIController
     public override void OnExit()
     {
         Managers.Levels.LoadScene(SceneForLoading);
-    }
-
-    public void OnItemAdded()
-    {
-        NewItem.text = "You got " + Managers.Inventory.NewItem;
-        StartCoroutine(ClearText(NewItem));
     }
 
     public void OnDialogStarted()

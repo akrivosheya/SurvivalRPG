@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class SelectingObject : MonoBehaviour, Item, Interactable
 {
-    public int Id { get; private set; } = 3;
+    public int Id { get { return _id; } private set { _id = value; } }
+    [SerializeField] private int _id = 3;
     [SerializeField] private List<string> Conditions;
     [SerializeField] private List<string> AddingConditions;
     [SerializeField] private List<string> BroadcastMessages;
