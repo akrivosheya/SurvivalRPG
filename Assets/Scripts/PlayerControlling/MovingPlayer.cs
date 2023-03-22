@@ -5,19 +5,34 @@ using UnityEngine;
 
 public class MovingPlayer : MonoBehaviour
 {
+    [SerializeField] private GameObject NPCPrefab;
+    [SerializeField] private Camera Camera;
     [SerializeField] private Vector3 StartPosition;
+    [SerializeField] private float CameraZPosition = -10;
     [SerializeField] private float Speed = 6f;
     [SerializeField] private float ZYOffset = 0.2f;
     private Animator _animator;
     private Collider2D[] _overlapedColliders = new Collider2D[1];
     private BoxCollider2D _collider;
     private ContactFilter2D _filter = new ContactFilter2D();
-    [SerializeField] private List<MovingNPC> _npcs = new List<MovingNPC>();
+    private List<MovingNPC> _npcs = new List<MovingNPC>();
     private ObjectData _objectData;
     private Vector3 _nextPosition;
     private Vector2Int _movement;
     private Vector2Int _fixedMovement;
     private bool _isMoving = false;
+
+    void Awake()
+    {
+        Messenger.AddListener(GameEvent.JOIN_TO_GROUP, OnJoinToGroup);
+        Messenger.AddListener(GameEvent.EXIT_FROM_GROUP, OnExitFromGroup);
+    }
+
+    void OnDestroy()
+    {
+        Messenger.RemoveListener(GameEvent.JOIN_TO_GROUP, OnJoinToGroup);
+        Messenger.RemoveListener(GameEvent.EXIT_FROM_GROUP, OnExitFromGroup);
+    }
 
     void Start()
     {
@@ -32,7 +47,7 @@ public class MovingPlayer : MonoBehaviour
 
     void Update()
     {
-        if(Managers.Dialogs.IsDialog || Managers.Conditions["START_ENDING"] || Managers.Conditions["IS_PAUSE"])
+        if(Managers.Dialogs.IsDialog || Managers.Conditions["SCENE_IS_CHANGING"] || Managers.Conditions["IS_PAUSE"])
         {
             return;
         }
@@ -57,6 +72,8 @@ public class MovingPlayer : MonoBehaviour
 
     public void SetTo(Vector3 transformPosition)
     {
+        Managers.Scene.DeleteObject((int)_objectData.Id);
+        Managers.Scene.SetObjectPosition((int)_objectData.Id, transformPosition);
         _isMoving = false;
         transform.position = transformPosition;
         _nextPosition = transformPosition;
@@ -64,13 +81,24 @@ public class MovingPlayer : MonoBehaviour
         {
             npc.SetTo(transformPosition);
         }
+        transformPosition.z = CameraZPosition;
+        Camera.transform.position = transformPosition;
     }
 
-    public void AddNpc(GameObject npcPrefab)
+    public void OnJoinToGroup()
     {
-        var newNpc = Instantiate(npcPrefab);
+        var newNpc = Instantiate(NPCPrefab);
         newNpc.transform.position = transform.position;
         _npcs.Add(newNpc.GetComponent<MovingNPC>());//проверки
+    }
+
+    public void OnExitFromGroup()
+    {
+        foreach(var npc in _npcs)
+        {
+            Destroy(npc.gameObject);
+        }
+        _npcs.Clear();
     }
 
     private void Move()//м/б отдельным компонентом
@@ -122,7 +150,7 @@ public class MovingPlayer : MonoBehaviour
 
     private void SetAnimation()
     {
-        if(!Managers.Dialogs.IsDialog && !Managers.Conditions["START_ENDING"])//очень плохо
+        if(!Managers.Dialogs.IsDialog && !Managers.Conditions["SCENE_IS_CHANGING"])//очень плохо
         {
             _animator.SetInteger("directionX", _movement.x);
             if(_movement.x == 0)

@@ -6,10 +6,8 @@ using UnityEngine;
 
 public class Exit : MonoBehaviour
 {
-    [SerializeField] private Camera Camera;
     [SerializeField] private Transform NextExit;
     [SerializeField] private Vector3 Offset;
-    [SerializeField] private float CameraZPosition;
     private Collider2D[] _overlapedColliders = new Collider2D[1];
     private ObjectData _objectData;
 
@@ -30,10 +28,6 @@ public class Exit : MonoBehaviour
             {
                 var nextPosition = NextExit.position + Offset;
                 moving.SetTo(nextPosition);
-                Managers.Scene.DeleteObject((int)objectData.Id);
-                Managers.Scene.SetObjectPosition((int)objectData.Id, nextPosition);
-                nextPosition.z = CameraZPosition;
-                Camera.transform.position = nextPosition;
             }
         }
     }

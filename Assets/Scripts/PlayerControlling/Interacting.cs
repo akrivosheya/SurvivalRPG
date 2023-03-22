@@ -18,14 +18,14 @@ public class Interacting : MonoBehaviour
 
     void Update()
     {
-        if(Managers.Dialogs.IsDialog || Managers.Conditions["START_ENDING"] || Managers.Conditions["IS_PAUSE"])
+        if(Managers.Dialogs.IsDialog || Managers.Conditions["SCENE_IS_CHANGING"] || Managers.Conditions["IS_PAUSE"])
         {
             return;
         }
         var axises = new Vector2Int();
         axises.x = (int)(Input.GetAxisRaw("Horizontal"));
         axises.y = (int)(Input.GetAxisRaw("Vertical"));
-        if(!axises.Equals(Vector2Int.zero) && _direction != axises)
+        if(!axises.Equals(Vector2Int.zero))
         {
             _direction = axises;
         }

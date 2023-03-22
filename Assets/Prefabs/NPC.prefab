@@ -160,5 +160,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AxisLimit: {x: 0.01, y: 0.01}
   Speed: 4
-  ZYOffset: 0.2
+  ZYOffset: 0.3
   TargetId: 2

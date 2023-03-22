@@ -98,7 +98,7 @@ public class MovingNPC : MonoBehaviour
 
     private void SetAnimation()
     {
-        if(!Managers.Dialogs.IsDialog && !Managers.Conditions["START_ENDING"])//очень плохо
+        if(!Managers.Dialogs.IsDialog && !Managers.Conditions["SCENE_IS_CHANGING"])//очень плохо
         {
             var _integerMovement = new Vector2Int();
             _integerMovement.x = (_movement.x > AxisLimit.x) ? 1 : ((_movement.x < -AxisLimit.x) ? -1 : 0);
