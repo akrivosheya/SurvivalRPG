@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConditionsManager : MonoBehaviour, IGameManager
+public class ConditionsManager : MonoBehaviour, IGameManager//нужно где-то хранить возможные константы
 {
     public ManagerStatus status { get; private set; }
     private Dictionary<string, bool> _conditions;
