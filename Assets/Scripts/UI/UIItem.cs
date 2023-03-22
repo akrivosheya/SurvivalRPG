@@ -10,7 +10,7 @@ public class UIItem : MonoBehaviour
 
     public void OnClick()
     {
-        if(Managers.Dialogs.IsDialog || Managers.Conditions["START_ENDING"] || Managers.Conditions["IS_PAUSE"])
+        if(Managers.Dialogs.IsDialog || Managers.Conditions["SCENE_IS_CHANGING"] || Managers.Conditions["IS_PAUSE"])
         {
             return;
         }
