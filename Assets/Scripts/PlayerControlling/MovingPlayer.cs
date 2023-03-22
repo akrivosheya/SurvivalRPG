@@ -7,11 +7,11 @@ public class MovingPlayer : MonoBehaviour
 {
     [SerializeField] private GameObject NPCPrefab;
     [SerializeField] private Camera Camera;
+    [SerializeField] private Animator animator;
     [SerializeField] private Vector3 StartPosition;
     [SerializeField] private float CameraZPosition = -10;
     [SerializeField] private float Speed = 6f;
     [SerializeField] private float ZYOffset = 0.2f;
-    private Animator _animator;
     private Collider2D[] _overlapedColliders = new Collider2D[1];
     private BoxCollider2D _collider;
     private ContactFilter2D _filter = new ContactFilter2D();
@@ -37,7 +37,6 @@ public class MovingPlayer : MonoBehaviour
     void Start()
     {
         _collider = GetComponent<BoxCollider2D>();
-        _animator = GetComponent<Animator>();
         _objectData = GetComponent<ObjectData>();
         _objectData.Id = ObjectsId.Player;
         Managers.Scene.SetObjectPosition((int)_objectData.Id, StartPosition);
@@ -152,16 +151,16 @@ public class MovingPlayer : MonoBehaviour
     {
         if(!Managers.Dialogs.IsDialog && !Managers.Conditions["SCENE_IS_CHANGING"])//очень плохо
         {
-            _animator.SetInteger("directionX", _movement.x);
+            animator.SetInteger("directionX", _movement.x);
             if(_movement.x == 0)
             {
-                _animator.SetInteger("directionY", _movement.y);
+                animator.SetInteger("directionY", _movement.y);
             }
             else
             {
-                _animator.SetInteger("directionY", 0);
+                animator.SetInteger("directionY", 0);
             }
-            _animator.SetBool("isMoving", _isMoving);
+            animator.SetBool("isMoving", _isMoving);
         }
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class UIController : BaseUIController
 {
-    [SerializeField] private Text NewItem;
     [SerializeField] private GameObject DialogWindow;
     [SerializeField] private GameObject PauseWindow;
     [SerializeField] private Text Dialog;
@@ -37,7 +36,6 @@ public class UIController : BaseUIController
         }
         DialogWindow.SetActive(false);
         PauseWindow.SetActive(false);
-        NewItem.text = _emptyText;
     }
 
     void LateUpdate()
