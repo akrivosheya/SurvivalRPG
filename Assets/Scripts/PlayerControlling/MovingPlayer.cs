@@ -12,7 +12,7 @@ public class MovingPlayer : MonoBehaviour
     private Collider2D[] _overlapedColliders = new Collider2D[1];
     private BoxCollider2D _collider;
     private ContactFilter2D _filter = new ContactFilter2D();
-    private List<MovingNPC> _npcs = new List<MovingNPC>();
+    [SerializeField] private List<MovingNPC> _npcs = new List<MovingNPC>();
     private ObjectData _objectData;
     private Vector3 _nextPosition;
     private Vector2Int _movement;
