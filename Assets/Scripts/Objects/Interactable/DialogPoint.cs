@@ -23,7 +23,10 @@ public class DialogPoint : MonoBehaviour, Interactable
 
     void Start()
     {
-        _behaviour = DialogBehaviour.GetComponent<Behaviour>();
+        if(DialogBehaviour != null)
+        {
+            _behaviour = DialogBehaviour.GetComponent<Behaviour>();
+        }
         _objectData = GetComponent<ObjectData>();
         _objectData.Id = ObjectsId.DialogPoint;
         var offset = Vector3.zero;
@@ -34,11 +37,9 @@ public class DialogPoint : MonoBehaviour, Interactable
                 offset.x = i;
                 offset.y = j;
                 offset.z = j;
-                //Debug.Log("set " + name + " to " + transform.position + offset);
                 Managers.Scene.SetObjectPosition((int)_objectData.Id, transform.position + offset);
             }
         }
-        //Managers.Scene.SetObjectPosition((int)_objectData.Id, transform.position);
     }
 
     void LateUpdate()
@@ -82,23 +83,8 @@ public class DialogPoint : MonoBehaviour, Interactable
             {
                 continue;
             }
-            foreach(var condition in NewConditions[i].Split(SplitCharacter))
-            {
-                Managers.Conditions.AddCondition(condition);
-            }
-            foreach(var condition in DeletingConditions[i].Split(SplitCharacter))
-            {
-                Managers.Conditions.DeleteCondition(condition);
-            }
-            foreach(var message in Messages[i].Split(SplitCharacter))
-            {
-                if(message.Equals(EmptyString))
-                {
-                    continue;
-                }
-                Messenger.Broadcast(message);
-            }
-            Managers.Dialogs.StartDialog(Dialogs[i].Split(SplitCharacter), PersonsNames[i].Split(SplitCharacter), PersonsImages[i].Split(SplitCharacter));
+            Managers.Dialogs.StartDialog(Dialogs[i].Split(SplitCharacter), PersonsNames[i].Split(SplitCharacter), PersonsImages[i].Split(SplitCharacter),
+                NewConditions[i].Split(SplitCharacter), DeletingConditions[i].Split(SplitCharacter), Messages[i].Split(SplitCharacter));
             break;
         }
     }

@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class MovingNPC : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
+    //[SerializeField] private Animator animator;
     [SerializeField] private Vector2 AxisLimit = new Vector2(0.01f, 0.01f);
     [SerializeField] private float Speed = 6f;
     [SerializeField] private float ZYOffset = 0.2f;
     [SerializeField] private int TargetId;
+    private Animator animator;
     private BoxCollider2D _collider;
     private ContactFilter2D _filter = new ContactFilter2D();
     private Collider2D[] _overlapedColliders = new Collider2D[1];
@@ -20,8 +21,8 @@ public class MovingNPC : MonoBehaviour
 
     void Start()
     {
+        animator = gameObject.GetComponentInChildren<Animator>();
         _collider = GetComponent<BoxCollider2D>();
-        animator = GetComponent<Animator>();
         _objectData = GetComponent<ObjectData>();
         _objectData.Id = ObjectsId.NPC;
         Managers.Scene.RawSetObjectPosition((int)_objectData.Id, transform.position);

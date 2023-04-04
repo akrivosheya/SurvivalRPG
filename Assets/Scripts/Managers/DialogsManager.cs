@@ -10,9 +10,13 @@ public class DialogsManager : MonoBehaviour, IGameManager
     public string CurrentPersonName { get { return _personsNames[_currentSentenceIndex]; } }
     public string CurrentPersonImage { get { return _personsImages[_currentSentenceIndex]; } }
     public bool IsDialog { get; private set; } = false;
+    private readonly string EmptyString = "";
     private string[] _sentences;
     private string[] _personsNames;
     private string[] _personsImages;
+    private string[] _addConditions;
+    private string[] _deleteConditions;
+    private string[] _messages;
     private int _currentSentenceIndex;
     private bool _canPressKey = false;
 
@@ -43,7 +47,7 @@ public class DialogsManager : MonoBehaviour, IGameManager
         }
     }
 
-    public void StartDialog(string[] sentences, string[] personsNames, string[] personsImages)
+    public void StartDialog(string[] sentences, string[] personsNames, string[] personsImages, string[] addConditions, string[] deleteConditions, string[] messages)
     {
         if(sentences.Length <= 0)
         {
@@ -63,6 +67,9 @@ public class DialogsManager : MonoBehaviour, IGameManager
         _sentences = sentences;
         _personsNames = personsNames;
         _personsImages = personsImages;
+        _addConditions = addConditions;
+        _deleteConditions = deleteConditions;
+        _messages = messages;
         IsDialog = true;
         Messenger.Broadcast(GameEvent.DIALOG_STARTED);
         StartCoroutine(AllowPressKey());
@@ -70,6 +77,22 @@ public class DialogsManager : MonoBehaviour, IGameManager
 
     private IEnumerator StopDialog()
     {
+        foreach(var condition in _addConditions)
+        {
+            Managers.Conditions.AddCondition(condition);
+        }
+        foreach(var condition in _deleteConditions)
+        {
+            Managers.Conditions.DeleteCondition(condition);
+        }
+        foreach(var message in _messages)
+        {
+            if(message.Equals(EmptyString))
+            {
+                continue;
+            }
+            Messenger.Broadcast(message);
+        }
         yield return new WaitForSeconds(DialogCooldownTime);
 
         IsDialog = false;

@@ -7,6 +7,7 @@ public class UIItem : MonoBehaviour
     [SerializeField] private string PersonsNames;
     [SerializeField] private string PersonsImages;
     [SerializeField] private char SplitCharacter;
+    private string[] EmptyArray = new string[0];
 
     public void OnClick()
     {
@@ -14,6 +15,7 @@ public class UIItem : MonoBehaviour
         {
             return;
         }
-        Managers.Dialogs.StartDialog(Dialogs.Split(SplitCharacter), PersonsNames.Split(SplitCharacter), PersonsImages.Split(SplitCharacter));
+        Managers.Dialogs.StartDialog(Dialogs.Split(SplitCharacter), PersonsNames.Split(SplitCharacter), PersonsImages.Split(SplitCharacter),
+            EmptyArray, EmptyArray, EmptyArray);
     }
 }
