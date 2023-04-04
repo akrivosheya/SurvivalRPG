@@ -8,6 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(ConditionsManager))]
 [RequireComponent(typeof(DialogsManager))]
 [RequireComponent(typeof(AudioManager))]
+[RequireComponent(typeof(TeleportManager))]
 
 public class Managers : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class Managers : MonoBehaviour
     public static ConditionsManager Conditions { get; private set; }
     public static DialogsManager Dialogs { get; private set; }
     public static AudioManager Audios { get; private set; }
+    public static TeleportManager Teleport { get; private set; }
 
     private List<IGameManager> _startSequence;
 
@@ -30,6 +32,7 @@ public class Managers : MonoBehaviour
         Conditions = GetComponent<ConditionsManager>();
         Dialogs = GetComponent<DialogsManager>();
         Audios = GetComponent<AudioManager>();
+        Teleport = GetComponent<TeleportManager>();
 
         _startSequence = new List<IGameManager>();
         _startSequence.Add(Scene);
@@ -38,6 +41,7 @@ public class Managers : MonoBehaviour
         _startSequence.Add(Conditions);
         _startSequence.Add(Dialogs);
         _startSequence.Add(Audios);
+        _startSequence.Add(Teleport);
 
         StartCoroutine(StartupManager());
     }
