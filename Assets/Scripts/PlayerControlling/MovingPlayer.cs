@@ -20,7 +20,9 @@ public class MovingPlayer : MonoBehaviour
     private Vector3 _nextPosition;
     private Vector2Int _movement;
     private Vector2Int _fixedMovement;
+    private Vector2Int _lastNotZeroMovement;
     private bool _isMoving = false;
+    private bool _prevIsMoving = false;
 
     void Awake()
     {
@@ -52,6 +54,10 @@ public class MovingPlayer : MonoBehaviour
         }
         _movement.x = (int)(Input.GetAxisRaw("Horizontal"));
         _movement.y = (int)(Input.GetAxisRaw("Vertical"));
+        if(!_movement.Equals(Vector2Int.zero))
+        {
+            _lastNotZeroMovement = _movement;
+        }
         if(_isMoving)
         {
             Move();
@@ -151,16 +157,31 @@ public class MovingPlayer : MonoBehaviour
     {
         if(!Managers.Dialogs.IsDialog && !Managers.Conditions["SCENE_IS_CHANGING"])//очень плохо
         {
-            animator.SetInteger("directionX", _movement.x);
+            var movement = new Vector2Int();
+            if(_isMoving)
+            {
+                movement = _movement;
+            }
+            else
+            {
+                movement = _lastNotZeroMovement;
+            }
+            animator.SetInteger("directionX", movement.x);
             if(_movement.x == 0)
             {
-                animator.SetInteger("directionY", _movement.y);
+                animator.SetInteger("directionY", movement.y);
             }
             else
             {
                 animator.SetInteger("directionY", 0);
             }
+            //animator.Update(Time.deltaTime);
             animator.SetBool("isMoving", _isMoving);
+            if(_prevIsMoving != _isMoving)
+            {
+                animator.Update(Time.deltaTime);
+            }
+            _prevIsMoving = _isMoving;
         }
     }
 }
