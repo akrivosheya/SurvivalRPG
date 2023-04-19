@@ -21,6 +21,7 @@ public class BerriesObserver : MonoBehaviour
     {
         if(Managers.Inventory.GetCount(BerriesId) == MaxCount)
         {
+            Managers.Conditions.AddCondition("HAS_ENOUGH_BERRIES");
             Managers.Teleport.TeleportToPosition(PositionToSet);
             CaveDownstair.SetActive(true);
         }

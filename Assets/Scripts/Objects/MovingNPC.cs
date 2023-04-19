@@ -17,7 +17,9 @@ public class MovingNPC : MonoBehaviour
     private Vector3 _oldTargetPosition;
     private Vector3 _nextPosition;
     private Vector3 _movement = Vector3.zero;
+    private Vector2Int _lastMovement = Vector2Int.zero;
     private bool _isMoving = false;
+    private bool _lastIsMoving = false;
 
     void Start()
     {
@@ -112,6 +114,12 @@ public class MovingNPC : MonoBehaviour
                 animator.SetInteger("directionY", 0);
             }
             animator.SetBool("isMoving", _isMoving);
+            if(_lastIsMoving != _isMoving ||  _lastMovement != _integerMovement)
+            {
+                animator.Update(Time.deltaTime);
+            }
+            _lastIsMoving = _isMoving;
+            _lastMovement = _integerMovement;
         }
     }
 }

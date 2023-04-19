@@ -4,18 +4,21 @@ public class StrangerBehaviour : MonoBehaviour, Behaviour
 {
     [SerializeField] private GameObject Stranger;
     [SerializeField] private GameObject KilledStranger;
+    [SerializeField] private SelectingObject Axe;
     [SerializeField] private Animator animator;
 
     void Awake()
     {
         Messenger.AddListener(GameEvent.KILL_STRANGER, OnStrangerKilled);
         Messenger.AddListener(GameEvent.GOT_AXE, OnGotAxe);
+        Messenger.AddListener(GameEvent.JOIN_TO_GROUP, OnJoinToGroup);
     }
 
     void OnDestroy()
     {
         Messenger.RemoveListener(GameEvent.KILL_STRANGER, OnStrangerKilled);
         Messenger.RemoveListener(GameEvent.GOT_AXE, OnGotAxe);
+        Messenger.RemoveListener(GameEvent.JOIN_TO_GROUP, OnJoinToGroup);
     }
 
     public void OnInteraction()
@@ -33,6 +36,13 @@ public class StrangerBehaviour : MonoBehaviour, Behaviour
         Stranger.SetActive(false);
         KilledStranger.SetActive(true);
         Managers.Audios.PlayOneShotSound(AudioClipsId.HEARTBEAT);
+    }
+
+    public void OnJoinToGroup()
+    {
+        animator.SetBool("JOIN_TO_GROUP", true);
+        Destroy(Stranger.GetComponent<DialogPoint>());
+        Destroy(Axe);
     }
 
     public void OnGotAxe()
