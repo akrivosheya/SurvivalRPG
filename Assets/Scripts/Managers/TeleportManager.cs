@@ -29,7 +29,7 @@ public class TeleportManager : MonoBehaviour, IGameManager
     
     public void OnBlackScene()
     {
-        if(Managers.Conditions["START_ENDING"])
+        if(Managers.Conditions["START_ENDING"] || Managers.Conditions["ESCAPE_FOREST"])
         {
             return;
         }

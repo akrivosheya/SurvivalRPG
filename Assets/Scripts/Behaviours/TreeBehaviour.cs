@@ -3,6 +3,7 @@ using UnityEngine;
 public class TreeBehaviour : MonoBehaviour, Behaviour
 {
     [SerializeField] private GameObject Tree;
+    [SerializeField] private GameObject Eyes;
     [SerializeField] private GameObject DeadTree;
     [SerializeField] private Animator animator;
 
@@ -31,6 +32,7 @@ public class TreeBehaviour : MonoBehaviour, Behaviour
     public void OnTreeWakeUp()
     {
         animator.SetBool("AWAKEN", true);
+        Eyes.SetActive(true);
     }
 
     public void OnTreeKill()

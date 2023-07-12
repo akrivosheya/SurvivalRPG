@@ -16,4 +16,6 @@ public static class GameEvent//намешано событий
     public const string NEED_CLEAR_SCENE = "NEED_CLEAR_SCENE";
     public const string JOIN_TO_GROUP = "JOIN_TO_GROUP";
     public const string EXIT_FROM_GROUP = "EXIT_FROM_GROUP";
+    public const string START_SEARCH_FIREFLY = "START_SEARCH_FIREFLY";
+    public const string GOT_STARFLY = "GOT_STARFLY";
 }
